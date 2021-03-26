@@ -1,3 +1,10 @@
 {
   "css.customData": [".vscode/css_custom_data.json"],
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "vue": "vue"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  }
 }
