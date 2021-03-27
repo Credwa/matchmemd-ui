@@ -5,3 +5,4 @@ declare module '*.vue' {
 }
 
 declare const _APP_VERSION: string
+declare const mixpanel: Mixpanel
