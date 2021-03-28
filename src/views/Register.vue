@@ -15,7 +15,7 @@
           <form class="space-y-6" @submit="onSubmit">
             <div class="pb-1 flex flex-col">
               <div class="pb-1 flex flex-row space-x-3">
-                <div>
+                <div class="relative">
                   <label v-show="false" for="firstName">First name</label>
                   <input
                     name="firstName"
@@ -25,13 +25,15 @@
                     autocomplete="firstName"
                     v-model="firstName"
                     :class="{
-                      'matchmemd-input-error': !(!firstNameMeta.dirty || firstNameMeta.valid)
+                      'matchmemd-input-error': !(!firstNameMeta.dirty || firstNameMeta.valid),
+                      'matchmemd-input-success': firstNameMeta.valid
                     }"
                     class="matchmemd-input w-full"
                   />
+                  <Tick :shown="firstNameMeta.valid" />
                 </div>
 
-                <div>
+                <div class="relative">
                   <label v-show="false" for="lastName">Last name</label>
                   <input
                     name="lastName"
@@ -41,10 +43,12 @@
                     autocomplete="lastName"
                     v-model="lastName"
                     :class="{
-                      'matchmemd-input-error': !(!lastNameMeta.dirty || lastNameMeta.valid)
+                      'matchmemd-input-error': !(!lastNameMeta.dirty || lastNameMeta.valid),
+                      'matchmemd-input-success': lastNameMeta.valid
                     }"
                     class="matchmemd-input w-full"
                   />
+                  <Tick :shown="lastNameMeta.valid" />
                 </div>
               </div>
               <div
@@ -75,19 +79,24 @@
             </div>
 
             <div class="pb-1">
-              <label v-show="false" for="email">Email</label>
-              <input
-                name="email"
-                type="email"
-                id="email"
-                :placeholder="$t('locale.registerScreen.placeholderEmail')"
-                autocomplete="email"
-                v-model="email"
-                :class="{
-                  'matchmemd-input-error': !(!emailMeta.dirty || emailMeta.valid)
-                }"
-                class="matchmemd-input w-full"
-              />
+              <div class="relative">
+                <label v-show="false" for="email">Email</label>
+                <input
+                  name="email"
+                  type="email"
+                  id="email"
+                  :placeholder="$t('locale.registerScreen.placeholderEmail')"
+                  autocomplete="email"
+                  v-model="email"
+                  :class="{
+                    'matchmemd-input-error': !(!emailMeta.dirty || emailMeta.valid),
+                    'matchmemd-input-success': emailMeta.valid
+                  }"
+                  class="matchmemd-input w-full"
+                />
+                <Tick :shown="emailMeta.valid" />
+              </div>
+
               <span v-if="email.length > 0 && !emailMeta.valid" class="matchmemd-text-error px-1">{{
                 emailError
               }}</span>
@@ -103,10 +112,12 @@
                 :placeholder="$t('locale.registerScreen.placeholderPassword')"
                 autocomplete="current-password"
                 :class="{
-                  'matchmemd-input-error': !(!passwordMeta.dirty || passwordMeta.valid)
+                  'matchmemd-input-error': !(!passwordMeta.dirty || passwordMeta.valid),
+                  'matchmemd-input-success': passwordMeta.valid
                 }"
                 class="matchmemd-input w-full"
               />
+              <Tick :shown="passwordMeta.valid" />
               <span
                 v-if="password.length > 0 && !passwordMeta.valid"
                 class="matchmemd-text-error px-1"
@@ -200,9 +211,11 @@
 import { computed, ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import Tick from '@/components/Tick.vue'
 
 export default {
   name: 'Register',
+  components: { Tick },
   setup() {
     // Define a validation schema
     const registerSchema = {
@@ -219,10 +232,14 @@ export default {
         if (!value) {
           return t('locale.registerScreen.enterPassword')
         }
-        if (!/^(?=.*[a-zA-Z]).{8,24}$/i.test(value)) {
+        if (!/^.{8,24}$/i.test(value)) {
           return t('locale.registerScreen.enterValidPassword')
-        } else if (!/^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)\S{8,}$/.test(value)) {
-          return t('locale.registerScreen.enterValidComplexPassword')
+        } else if (!/^(?=\S*\d)\S{8,24}$/.test(value)) {
+          return t('locale.registerScreen.enterValidPasswordNumber')
+        } else if (!/^(?=\S*[a-z])\S{8,}$/.test(value)) {
+          return t('locale.registerScreen.enterValidPasswordLowercase')
+        } else if (!/^(?=\S*[A-Z])\S{8,}$/.test(value)) {
+          return t('locale.registerScreen.enterValidPasswordUppercase')
         }
         return true
       },

@@ -39,6 +39,10 @@
     @apply focus:border-salmon-500 border-salmon-400 focus:ring-salmon-500;
   }
 
+  .matchmemd-input-success {
+    @apply focus:border-pacific-500 border-pacific-400 focus:ring-pacific-500;
+  }
+
   .matchmemd-text-error {
     @apply text-salmon-500 text-xs font-medium;
   }
