@@ -4,7 +4,7 @@
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      class="h-5 w-5 text-pacific-500"
+      class="h-4 w-4 text-pacific-500"
       stroke="currentColor"
       v-show="shown"
     >

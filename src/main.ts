@@ -33,9 +33,7 @@ const i18n = createI18n({
 //   credits: 150 // ...or numbers
 // })
 
-let app
-auth.onAuthStateChanged(() => {
-  app = createApp(App)
-  app.component('LayoutDefault', LayoutDefault)
-  app.use(i18n).use(router).use(store).mount('#app')
-})
+let app = createApp(App)
+app.component('LayoutDefault', LayoutDefault)
+app.use(i18n).use(router).use(store).mount('#app')
+// auth.onAuthStateChanged(() => {})

@@ -2,7 +2,13 @@
   <LayoutDefault>
     <div class="w-screen px-3 mt-12">
       <header class="sm:mx-auto sm:w-full sm:max-w-md sm:mt-16">
-        <img class="mx-auto h-9 sm:h-10 w-auto sm:mb-12" src="/logo.svg" alt="MatchMeMD" />
+        <img
+          height="40"
+          width="210"
+          class="mx-auto h-9 sm:h-10 w-auto sm:mb-12"
+          src="/logo.svg"
+          alt="MatchMeMD"
+        />
         <h1
           class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
         >
@@ -91,6 +97,8 @@
                     <a href="#" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.loginScreen.withGoogle') }}</span>
                       <img
+                        height="20"
+                        width="20"
                         class="mx-auto h-5 sm:h-5 w-auto"
                         src="/google-logo.svg"
                         alt="Google login"
@@ -102,6 +110,8 @@
                     <a href="#" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.loginScreen.withFacebook') }}</span>
                       <img
+                        height="20"
+                        width="20"
                         class="mx-auto h-5 sm:h-5 w-auto"
                         src="/facebook-logo.svg"
                         alt="Facebook login"
@@ -137,6 +147,8 @@ import { useI18n } from 'vue-i18n'
 export default {
   name: 'Login',
   setup() {
+    const { t } = useI18n()
+    document.title = t('locale.loginScreen.meta.title')
     // Define a validation schema
     const loginSchema = {
       email(value: string) {
@@ -158,7 +170,6 @@ export default {
         return true
       }
     }
-    const { t } = useI18n()
     let loading = ref(false)
     const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: loginSchema })
     const onSubmit = handleSubmit((values) => {

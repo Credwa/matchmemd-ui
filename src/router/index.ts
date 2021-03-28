@@ -5,7 +5,10 @@ import Register from '@/views/Register.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/login',
+    meta: {
+      title: 'About Page - Example App'
+    }
   },
   {
     path: '/login',

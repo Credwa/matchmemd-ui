@@ -3,6 +3,9 @@ const en_locale = {
     locale: {
       loginScreen: {
         title: 'Log into your account',
+        meta: {
+          title: 'Login - MatchMeMD'
+        },
         cta: 'Login',
         continue: 'Or continue with',
         placeholderEmail: 'Email',
@@ -21,6 +24,9 @@ const en_locale = {
       },
       registerScreen: {
         title: 'Start your medical journey',
+        meta: {
+          title: 'Register - MatchMeMD'
+        },
         cta: 'Register',
         continue: 'Or continue with',
         placeholderEmail: 'Email',

@@ -1,8 +1,14 @@
 <template>
   <LayoutDefault>
-    <div class="w-screen px-3 mt-12 overflow-y-hidden">
+    <div class="w-screen px-3 mt-12">
       <header class="sm:mx-auto sm:w-full sm:max-w-md sm:mt-16">
-        <img class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto" src="/logo.svg" alt="MatchMeMD" />
+        <img
+          height="40"
+          width="210"
+          class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto"
+          src="/logo.svg"
+          alt="MatchMeMD"
+        />
         <h1
           class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
         >
@@ -171,6 +177,8 @@
                     <a href="#" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.registerScreen.withGoogle') }}</span>
                       <img
+                        height="20"
+                        width="20"
                         class="mx-auto h-5 sm:h-5 w-auto"
                         src="/google-logo.svg"
                         alt="Google sign in"
@@ -182,6 +190,8 @@
                     <a href="#" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.registerScreen.withFacebook') }}</span>
                       <img
+                        height="20"
+                        width="20"
                         class="mx-auto h-5 sm:h-5 w-auto"
                         src="/facebook-logo.svg"
                         alt="Facebook sign in"
@@ -217,6 +227,8 @@ export default {
   name: 'Register',
   components: { Tick },
   setup() {
+    const { t } = useI18n()
+    document.title = t('locale.registerScreen.meta.title')
     // Define a validation schema
     const registerSchema = {
       email(value: string) {
@@ -263,7 +275,6 @@ export default {
       }
     }
     const loading = ref(false)
-    const { t } = useI18n()
     const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: registerSchema })
     const onSubmit = handleSubmit((values) => {
       loading.value = true

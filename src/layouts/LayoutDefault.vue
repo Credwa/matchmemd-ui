@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center w-screen h-screen bg-scroll bg-cover"
+    class="flex justify-center w-screen h-screen bg-cover bg-scroll"
     style="background-image: url(/background-trianglify.svg)"
   >
     <slot></slot>
