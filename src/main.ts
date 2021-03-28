@@ -8,6 +8,7 @@ import App from './App.vue'
 import { store } from './store'
 import './index.css'
 import router from './router'
+import { auth } from './services/firebase'
 
 const locales = {
   ...en_locale,
@@ -31,6 +32,10 @@ const i18n = createI18n({
 //   USER_ID: USER_ID, // use human-readable names
 //   credits: 150 // ...or numbers
 // })
-const app = createApp(App)
-app.component('LayoutDefault', LayoutDefault)
-app.use(i18n).use(router).use(store).mount('#app')
+
+let app
+auth.onAuthStateChanged(() => {
+  app = createApp(App)
+  app.component('LayoutDefault', LayoutDefault)
+  app.use(i18n).use(router).use(store).mount('#app')
+})

@@ -10,6 +10,36 @@
   }
 
   .has-tooltip:hover .tooltip {
-    @apply visible z-50;
+    @apply visible z-50 bg-salmon-500 text-pacific-50 rounded shadow-md;
+  }
+}
+
+@layer components {
+  .matchmemd-button {
+    @apply disabled:bg-gray-400 border border-transparent rounded-md shadow-sm text-pacific-50 bg-pacific-500 hover:bg-pacific-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pacific-500 text-sm font-medium flex justify-center py-2 px-4;
+  }
+
+  .matchmemd-social-button {
+    @apply w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-gray-50 sm:bg-white text-sm font-medium text-gray-500 sm:hover:bg-gray-50 hover:bg-gray-100;
+  }
+
+  .matchmemd-text-link {
+    @apply hover:text-pacific-600 cursor-pointer text-pacific-500 font-medium;
+  }
+
+  .matchmemd-checkbox {
+    @apply h-4 w-4 text-pacific-500 focus:ring-pacific-500 border-gray-300 rounded;
+  }
+
+  .matchmemd-input {
+    @apply appearance-none block border text-gray-700 bg-gray-50 sm:bg-white rounded-md shadow-sm focus:border-pacific-500 border-gray-300 focus:ring-pacific-500 placeholder-gray-400 focus:outline-none px-3 py-2;
+  }
+
+  .matchmemd-input-error {
+    @apply focus:border-salmon-500 border-salmon-400 focus:ring-salmon-500;
+  }
+
+  .matchmemd-text-error {
+    @apply text-salmon-500 text-xs font-medium;
   }
 }

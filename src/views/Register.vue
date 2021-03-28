@@ -24,12 +24,10 @@
                     :placeholder="$t('locale.registerScreen.placeholderFirstName')"
                     autocomplete="firstName"
                     v-model="firstName"
-                    :class="[
-                      !firstNameMeta.dirty || firstNameMeta.valid
-                        ? 'focus:border-pacific-500 border-gray-300 focus:ring-pacific-500'
-                        : 'focus:border-coral-600 border-coral-600 focus:ring-coral-600'
-                    ]"
-                    class="appearance-none block w-full px-3 py-2 border text-gray-700 bg-gray-50 sm:bg-white focus:border-pacific-500 border-gray-300 focus:ring-pacific-500 rounded-md shadow-sm placeholder-gray-400 focus:outline-none"
+                    :class="{
+                      'matchmemd-input-error': !(!firstNameMeta.dirty || firstNameMeta.valid)
+                    }"
+                    class="matchmemd-input w-full"
                   />
                 </div>
 
@@ -42,12 +40,10 @@
                     :placeholder="$t('locale.registerScreen.placeholderLastName')"
                     autocomplete="lastName"
                     v-model="lastName"
-                    :class="[
-                      !lastNameMeta.dirty || lastNameMeta.valid
-                        ? 'focus:border-pacific-500 border-gray-300 focus:ring-pacific-500'
-                        : 'focus:border-coral-600 border-coral-600 focus:ring-coral-600'
-                    ]"
-                    class="appearance-none block w-full px-3 border text-gray-700 bg-gray-50 focus:border-pacific-500 border-gray-300 focus:ring-pacific-500 sm:bg-white rounded-md shadow-sm placeholder-gray-400 focus:outline-none"
+                    :class="{
+                      'matchmemd-input-error': !(!lastNameMeta.dirty || lastNameMeta.valid)
+                    }"
+                    class="matchmemd-input w-full"
                   />
                 </div>
               </div>
@@ -59,7 +55,7 @@
               >
                 <span
                   v-if="firstName.length > 0 && !firstNameMeta.valid"
-                  class="text-coral-600 text-xs font-medium px-1"
+                  class="matchmemd-text-error px-1"
                   >{{ firstNameError }}</span
                 >
                 <br
@@ -72,7 +68,7 @@
                 />
                 <span
                   v-if="lastName.length > 0 && !lastNameMeta.valid"
-                  class="text-coral-600 text-xs font-medium px-1"
+                  class="matchmemd-text-error px-1"
                   >{{ lastNameError }}</span
                 >
               </div>
@@ -87,18 +83,14 @@
                 :placeholder="$t('locale.registerScreen.placeholderEmail')"
                 autocomplete="email"
                 v-model="email"
-                :class="[
-                  !emailMeta.dirty || emailMeta.valid
-                    ? 'focus:border-pacific-500 border-gray-300 focus:ring-pacific-500'
-                    : 'focus:border-coral-600 border-coral-600 focus:ring-coral-600'
-                ]"
-                class="appearance-none block w-full px-3 py-2 border text-gray-700 bg-gray-50 sm:bg-white rounded-md shadow-sm placeholder-gray-400 focus:outline-none"
+                :class="{
+                  'matchmemd-input-error': !(!emailMeta.dirty || emailMeta.valid)
+                }"
+                class="matchmemd-input w-full"
               />
-              <span
-                v-if="email.length > 0 && !emailMeta.valid"
-                class="text-coral-600 text-xs font-medium px-1"
-                >{{ emailError }}</span
-              >
+              <span v-if="email.length > 0 && !emailMeta.valid" class="matchmemd-text-error px-1">{{
+                emailError
+              }}</span>
             </div>
 
             <div class="mb-2 relative rounded-md">
@@ -110,16 +102,14 @@
                 v-model="password"
                 :placeholder="$t('locale.registerScreen.placeholderPassword')"
                 autocomplete="current-password"
-                :class="[
-                  !passwordMeta.dirty || passwordMeta.valid
-                    ? 'focus:border-pacific-500 border-gray-300 focus:ring-pacific-500'
-                    : 'focus:border-coral-600 border-coral-600 focus:ring-coral-600'
-                ]"
-                class="appearance-none block w-full px-3 py-2 border bg-gray-50 text-gray-700 sm:bg-white border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pacific-500 focus:border-pacific-500"
+                :class="{
+                  'matchmemd-input-error': !(!passwordMeta.dirty || passwordMeta.valid)
+                }"
+                class="matchmemd-input w-full"
               />
               <span
                 v-if="password.length > 0 && !passwordMeta.valid"
-                class="text-coral-600 text-xs font-medium px-1"
+                class="matchmemd-text-error px-1"
                 >{{ passwordError }}</span
               >
             </div>
@@ -127,17 +117,11 @@
               <div class="flex items-center">
                 <p class="text-sm leading-5 text-center font-sans">
                   {{ $t('locale.registerScreen.signUpAcceptance.main') }}
-                  <router-link
-                    to="/terms"
-                    class="font-medium text-sm text-center text-pacific-500 hover:text-pacific-600"
-                  >
+                  <router-link to="/terms" class="text-sm text-center matchmemd-text-link">
                     {{ $t('locale.registerScreen.signUpAcceptance.terms') }}
                   </router-link>
                   {{ $t('locale.registerScreen.signUpAcceptance.and') }}
-                  <router-link
-                    to="/policy"
-                    class="font-medium text-sm text-center text-pacific-500 hover:text-pacific-600"
-                  >
+                  <router-link to="/policy" class="text-sm text-center matchmemd-text-link">
                     {{ $t('locale.registerScreen.signUpAcceptance.policy') }}
                   </router-link>
                 </p>
@@ -149,15 +133,13 @@
                 <button
                   type="submit"
                   :disabled="isSubmitting || !registerEnabled"
-                  class="has-tooltip w-full disabled:bg-gray-400 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-pacific-50 bg-pacific-500 hover:bg-pacific-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pacific-500"
+                  class="matchmemd-button has-tooltip w-full"
                 >
                   <img v-if="loading" class="h-full w-5" src="/Loader.svg" />
                   <div v-else>{{ $t('locale.registerScreen.cta') }}</div>
-                  <span
-                    v-if="!registerEnabled"
-                    class="tooltip rounded shadow-md p-2 bg-white text-pacific-500 mt-8"
-                    >{{ $t('locale.registerScreen.tooltip') }}</span
-                  >
+                  <span v-if="!registerEnabled" class="tooltip p-2 mt-8">{{
+                    $t('locale.registerScreen.tooltip')
+                  }}</span>
                 </button>
               </div>
 
@@ -175,10 +157,7 @@
 
                 <div class="mt-6 grid grid-cols-2 gap-2">
                   <div>
-                    <a
-                      href="#"
-                      class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-gray-50 sm:bg-white text-sm font-medium text-gray-500 sm:hover:bg-gray-50 hover:bg-gray-100"
-                    >
+                    <a href="#" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.registerScreen.withGoogle') }}</span>
                       <img
                         class="mx-auto h-5 sm:h-5 w-auto"
@@ -189,10 +168,7 @@
                   </div>
 
                   <div>
-                    <a
-                      href="#"
-                      class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-gray-50 sm:bg-white text-sm font-medium text-gray-500 sm:hover:bg-gray-50 hover:bg-gray-100"
-                    >
+                    <a href="#" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.registerScreen.withFacebook') }}</span>
                       <img
                         class="mx-auto h-5 sm:h-5 w-auto"
@@ -210,10 +186,7 @@
             <p class="text-sm py-3 sm:py-1 text-gray-600">
               {{ $t('locale.registerScreen.noAccount') }}
             </p>
-            <router-link
-              to="/login"
-              class="text-sm ml-1 py-3 font-medium text-pacific-500 sm:py-1 hover:text-pacific-600 cursor-pointer"
-            >
+            <router-link to="/login" class="matchmemd-text-link text-sm ml-1 py-3 sm:py-1">
               {{ $t('locale.registerScreen.goToLogin') }}
             </router-link>
           </div>
