@@ -34,14 +34,11 @@ const i18n = createI18n({
 // })
 let app
 auth.onAuthStateChanged((user) => {
-  console.log('starting')
-  console.log(user)
   app = createApp(App)
   app.component('LayoutDefault', LayoutDefault)
   app.use(i18n).use(router).use(store).mount('#app')
 
   if (user) {
-    console.log('user found')
     store.dispatch(Action.FETCH_USER_PROFILE)
   }
 })

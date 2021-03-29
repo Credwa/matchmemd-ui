@@ -146,11 +146,13 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { LoginKeys, LoginValues } from '../types/'
 import { Action } from '../store/actions'
+import { useRouter, useRoute } from 'vue-router'
 
 export default {
   name: 'Login',
   setup() {
     const store = useStore()
+    const router = useRouter()
     const { t } = useI18n()
     document.title = t('locale.loginScreen.meta.title')
     // Define a validation schema
@@ -200,7 +202,7 @@ export default {
         .dispatch(Action.LOGIN, values)
         .then(() => {
           loading.value = false
-          console.log('done login')
+          router.push('/dashboard')
         })
         .catch(() => {
           loading.value = false

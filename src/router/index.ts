@@ -12,18 +12,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'Login',
-    component: Login,
-    meta: {
-      redirectToDashboardIfAuth: true
-    }
+    component: Login
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register,
-    meta: {
-      redirectToDashboardIfAuth: true
-    }
+    component: Register
   },
   {
     path: '/policy',
@@ -60,7 +54,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((x) => x.meta.requiresAuth)
-  const redirectToDashboardIfAuth = to.matched.some((x) => x.meta.redirectToDashboardIfAuth)
   if (auth.currentUser && (to.name === 'Login' || to.name === 'Register')) {
     next('/dashboard')
   }

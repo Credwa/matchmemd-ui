@@ -24,7 +24,7 @@ type AugmentedActionContext = {
 export interface Actions {
   [Action.initApp]({ state, commit, dispatch }: AugmentedActionContext): void
   [Action.LOGIN]({ dispatch }: AugmentedActionContext, form: LoginForm): void
-  [Action.FETCH_USER_PROFILE]({ dispatch }: AugmentedActionContext, user: unknown): void
+  [Action.FETCH_USER_PROFILE]({ dispatch }: AugmentedActionContext, user: firebase.types.User): void
   [Action.REGISTER]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
   [Action.LOGOUT]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
 }
@@ -80,7 +80,6 @@ export const actions: ActionTree<State, State> & Actions = {
         router.currentRoute.value.path === '/register'
       ) {
         router.push('/dashboard')
-        console.log('pushing')
       }
     }
   }

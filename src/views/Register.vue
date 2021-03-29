@@ -323,7 +323,6 @@ export default {
         .dispatch(Action.REGISTER, values)
         .then(() => {
           loading.value = false
-          console.log('done register')
         })
         .catch(() => {
           loading.value = false

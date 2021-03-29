@@ -8,5 +8,5 @@ export type Getters = {
 export const getters: GetterTree<State, State> & Getters = {
   isReady(state) {
     return !state.isInitialized
-  },
+  }
 }
