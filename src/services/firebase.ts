@@ -1,5 +1,4 @@
 import firebase from 'firebase/app'
-
 import 'firebase/auth'
 import 'firebase/firestore'
 
@@ -22,4 +21,4 @@ const auth = firebase.auth()
 const usersCollection = db.collection('users')
 
 // export utils/refs
-export { db, auth, usersCollection }
+export { db, auth, usersCollection, firebase as types }

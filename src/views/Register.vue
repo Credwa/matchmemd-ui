@@ -29,7 +29,7 @@
                     id="firstName"
                     :placeholder="$t('locale.registerScreen.placeholderFirstName')"
                     autocomplete="firstName"
-                    v-model="firstName"
+                    v-model.trim="firstName"
                     :class="{
                       'matchmemd-input-error': !(!firstNameMeta.dirty || firstNameMeta.valid),
                       'matchmemd-input-success': firstNameMeta.valid
@@ -47,7 +47,7 @@
                     id="lastName"
                     :placeholder="$t('locale.registerScreen.placeholderLastName')"
                     autocomplete="lastName"
-                    v-model="lastName"
+                    v-model.trim="lastName"
                     :class="{
                       'matchmemd-input-error': !(!lastNameMeta.dirty || lastNameMeta.valid),
                       'matchmemd-input-success': lastNameMeta.valid
@@ -93,7 +93,7 @@
                   id="email"
                   :placeholder="$t('locale.registerScreen.placeholderEmail')"
                   autocomplete="email"
-                  v-model="email"
+                  v-model.trim="email"
                   :class="{
                     'matchmemd-input-error': !(!emailMeta.dirty || emailMeta.valid),
                     'matchmemd-input-success': emailMeta.valid
@@ -114,7 +114,7 @@
                 name="password"
                 type="password"
                 id="password"
-                v-model="password"
+                v-model.trim="password"
                 :placeholder="$t('locale.registerScreen.placeholderPassword')"
                 autocomplete="current-password"
                 :class="{
@@ -222,11 +222,15 @@ import { computed, ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 import Tick from '@/components/Tick.vue'
+import { RegisterKeys, RegisterValues } from '../types/'
+import { useStore } from 'vuex'
+import { Action } from '../store/actions'
 
 export default {
   name: 'Register',
   components: { Tick },
   setup() {
+    const store = useStore()
     const { t } = useI18n()
     document.title = t('locale.registerScreen.meta.title')
     // Define a validation schema
@@ -276,13 +280,6 @@ export default {
     }
     const loading = ref(false)
     const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: registerSchema })
-    const onSubmit = handleSubmit((values) => {
-      loading.value = true
-      setTimeout(() => {
-        loading.value = false
-        alert(JSON.stringify(values, null, 2))
-      }, 2000)
-    })
 
     const { errorMessage: emailError, value: email, meta: emailMeta } = useField<string>(
       'email',
@@ -319,6 +316,19 @@ export default {
     const registerEnabled = computed(
       () => firstNameMeta.valid && lastNameMeta.valid && emailMeta.valid && passwordMeta.valid
     )
+
+    const onSubmit = handleSubmit((values: Record<RegisterKeys, RegisterValues>) => {
+      loading.value = true
+      store
+        .dispatch(Action.REGISTER, values)
+        .then(() => {
+          loading.value = false
+          console.log('done register')
+        })
+        .catch(() => {
+          loading.value = false
+        })
+    })
 
     return {
       onSubmit,

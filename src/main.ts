@@ -5,7 +5,7 @@ import { createApp } from 'vue'
 import { en_locale, ja_locale } from './services/locales'
 import LayoutDefault from '@/layouts/LayoutDefault.vue'
 import App from './App.vue'
-import { store } from './store'
+import { Action, store } from './store'
 import './index.css'
 import router from './router'
 import { auth } from './services/firebase'
@@ -32,9 +32,16 @@ const i18n = createI18n({
 //   USER_ID: USER_ID, // use human-readable names
 //   credits: 150 // ...or numbers
 // })
-
-auth.onAuthStateChanged(() => {
-  let app = createApp(App)
+let app
+auth.onAuthStateChanged((user) => {
+  console.log('starting')
+  console.log(user)
+  app = createApp(App)
   app.component('LayoutDefault', LayoutDefault)
   app.use(i18n).use(router).use(store).mount('#app')
+
+  if (user) {
+    console.log('user found')
+    store.dispatch(Action.FETCH_USER_PROFILE)
+  }
 })

@@ -3,6 +3,7 @@ export interface State {
   version: string
   isInitialized: boolean
   count: number
+  userProfile: Record<string, unknown>
 }
 
 const versionString = import.meta.env.MODE === 'development' ? _APP_VERSION + '-dev' : _APP_VERSION
@@ -11,5 +12,6 @@ export const state: State = {
   debug: import.meta.env.MODE === 'development',
   version: versionString,
   isInitialized: false,
-  count: 0
+  count: 0,
+  userProfile: {}
 }

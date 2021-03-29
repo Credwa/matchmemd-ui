@@ -27,7 +27,7 @@
                 id="email"
                 :placeholder="$t('locale.loginScreen.placeholderEmail')"
                 autocomplete="email"
-                v-model="email"
+                v-model.trim="email"
                 class="matchmemd-input w-full"
               />
             </div>
@@ -38,7 +38,7 @@
                 name="password"
                 type="password"
                 id="password"
-                v-model="password"
+                v-model.trim="password"
                 :placeholder="$t('locale.loginScreen.placeholderPassword')"
                 autocomplete="current-password"
                 class="matchmemd-input w-full"
@@ -143,10 +143,14 @@
 import { computed, ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
+import { LoginKeys, LoginValues } from '../types/'
+import { Action } from '../store/actions'
 
 export default {
   name: 'Login',
   setup() {
+    const store = useStore()
     const { t } = useI18n()
     document.title = t('locale.loginScreen.meta.title')
     // Define a validation schema
@@ -172,13 +176,6 @@ export default {
     }
     let loading = ref(false)
     const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: loginSchema })
-    const onSubmit = handleSubmit((values) => {
-      loading.value = true
-      setTimeout(() => {
-        loading.value = false
-        alert(JSON.stringify(values, null, 2))
-      }, 2000)
-    })
 
     const { errorMessage: emailError, value: email, meta: emailMeta } = useField<string>(
       'email',
@@ -196,6 +193,19 @@ export default {
     )
 
     const loginEnabled = computed(() => emailMeta.valid && passwordMeta.valid)
+
+    const onSubmit = handleSubmit((values: Record<LoginKeys, LoginValues>) => {
+      loading.value = true
+      store
+        .dispatch(Action.LOGIN, values)
+        .then(() => {
+          loading.value = false
+          console.log('done login')
+        })
+        .catch(() => {
+          loading.value = false
+        })
+    })
 
     return {
       onSubmit,
