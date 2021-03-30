@@ -2,13 +2,17 @@
   <LayoutDefault>
     <div class="w-screen px-3 mt-12">
       <header class="sm:mx-auto sm:w-full sm:max-w-md sm:mt-16">
-        <img
-          height="40"
-          width="210"
-          class="mx-auto h-9 sm:h-10 w-auto sm:mb-12"
-          src="/logo.svg"
-          alt="MatchMeMD"
-        />
+        <a
+          href="https://matchmemd.com
+        "
+        >
+          <img
+            height="40"
+            width="210"
+            class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto"
+            src="/logo.svg"
+            alt="MatchMeMD"
+        /></a>
         <h1
           class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
         >
@@ -18,9 +22,26 @@
 
       <main class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="sm:bg-white py-8 px-2 sm:shadow sm:rounded-lg sm:px-10">
+          <div
+            class="py-1 px-2 mb-8 rounded m-auto w-full bg-salmon-600 text-pacific-50"
+            v-if="loginError"
+          >
+            <div class="flex items-center">
+              <p class="leading-7 text-pacific-50 text-center">
+                {{ $t('locale.loginScreen.loginError.main') }}
+                <router-link
+                  class="matchmemd-text-link text-pacific-200 hover:text-pacific-100 font-normal"
+                  to="/forgot-password"
+                  >{{ $t('locale.loginScreen.loginError.resetPassword') }}</router-link
+                >
+              </p>
+            </div>
+          </div>
           <form class="space-y-6" @submit="onSubmit">
             <div class="pb-1">
-              <label v-show="false" for="email">Email</label>
+              <label v-show="false" for="email">{{
+                $t('locale.loginScreen.placeholderEmail')
+              }}</label>
               <input
                 name="email"
                 type="email"
@@ -33,7 +54,9 @@
             </div>
 
             <div class="pb-2">
-              <label v-show="false" for="password">Password</label>
+              <label v-show="false" for="password">{{
+                $t('locale.loginScreen.placeholderPassword')
+              }}</label>
               <input
                 name="password"
                 type="password"
@@ -44,13 +67,13 @@
                 class="matchmemd-input w-full"
               />
             </div>
-
             <div class="flex items-center justify-between pb-2">
               <div class="flex items-center">
                 <input
                   id="remember_me"
                   name="remember_me"
                   type="checkbox"
+                  v-model="rememberMe"
                   class="matchmemd-checkbox"
                 />
                 <label for="remember_me" class="ml-2 block text-sm text-gray-700">
@@ -59,9 +82,12 @@
               </div>
 
               <div class="text-sm">
-                <a href="#" class="font-medium text-pacific-500 hover:text-pacific-600">
+                <router-link
+                  to="/forgot-password"
+                  class="font-medium text-pacific-500 hover:text-pacific-600"
+                >
                   {{ $t('locale.loginScreen.forgotPassword') }}
-                </a>
+                </router-link>
               </div>
             </div>
 
@@ -146,14 +172,15 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { LoginKeys, LoginValues } from '../types/'
 import { Action } from '../store/actions'
-import { useRouter, useRoute } from 'vue-router'
+import { LOGIN_FAILED } from '../services/mixpanel-events'
 
 export default {
   name: 'Login',
   setup() {
     const store = useStore()
-    const router = useRouter()
     const { t } = useI18n()
+    const loginError = ref(false)
+    const rememberMe = ref(false)
     document.title = t('locale.loginScreen.meta.title')
     // Define a validation schema
     const loginSchema = {
@@ -196,15 +223,30 @@ export default {
 
     const loginEnabled = computed(() => emailMeta.valid && passwordMeta.valid)
 
+    const storage_remembered_value = localStorage.getItem('remember_email')
+
+    if (storage_remembered_value) {
+      rememberMe.value = Boolean(storage_remembered_value)
+      email.value = storage_remembered_value
+    }
+
     const onSubmit = handleSubmit((values: Record<LoginKeys, LoginValues>) => {
       loading.value = true
       store
         .dispatch(Action.LOGIN, values)
         .then(() => {
           loading.value = false
-          router.push('/dashboard')
+          if (rememberMe.value) {
+            localStorage.setItem('remember_email', email.value)
+          } else {
+            localStorage.removeItem('remember_email')
+          }
         })
-        .catch(() => {
+        .catch((e) => {
+          let failedResults: Record<string, unknown> = { ...values, reason: e.code }
+          delete failedResults.password
+          loginError.value = true
+          mixpanel.track(LOGIN_FAILED, failedResults)
           loading.value = false
         })
     })
@@ -220,7 +262,9 @@ export default {
       passwordError,
       passwordMeta,
       loginEnabled,
-      loading
+      loading,
+      loginError,
+      rememberMe
     }
   }
 }

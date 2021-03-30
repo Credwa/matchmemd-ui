@@ -61,7 +61,11 @@ interface Mixpanel {
    * @param properties A set of properties to include with the event you're sending. These describe the user who did the event or details about the event itself.
    * @param callback If provided, the callback function will be called after tracking the event.
    */
-  track(eventName: string, properties?: { [index: string]: unknown }, callback?: () => void): void
+  track<T>(
+    eventName: string,
+    properties?: { [index: string]: unknown } | T,
+    callback?: () => void
+  ): void
 
   /**
    * Track clicks on a set of document elements. Selector must be a

@@ -1,15 +1,16 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
+import { UserProfile } from '../types'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCjaa9Tw08JzyFxG74_v2LUV36bsdShfr4',
-  authDomain: 'matchmemd-staging-308907.firebaseapp.com',
-  databaseURL: 'https://matchmemd-staging-308907.firebaseio.com',
-  projectId: 'matchmemd-staging-308907',
-  storageBucket: 'matchmemd-staging-308907.appspot.com',
-  messagingSenderId: '80039213812',
-  appId: '1:80039213812:web:35276d6a60ba21012c7ca1'
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 }
 firebase.initializeApp(firebaseConfig)
 
@@ -18,7 +19,9 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 
 // collection references
-const usersCollection = db.collection('users')
+const usersCollection = db.collection(
+  'users'
+) as firebase.firestore.CollectionReference<UserProfile>
 
 // export utils/refs
 export { db, auth, usersCollection, firebase as types }

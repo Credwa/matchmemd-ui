@@ -2,7 +2,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   purge: {
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging',
     content: ['./index.html', './src/**/*.{vue,ts}']
   },
   theme: {

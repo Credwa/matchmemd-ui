@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { createI18n } from 'vue-i18n/dist/vue-i18n.esm-bundler.js'
-import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
+import { createApp, App as VueApp } from 'vue'
 import { en_locale, ja_locale } from './services/locales'
 import LayoutDefault from '@/layouts/LayoutDefault.vue'
 import App from './App.vue'
@@ -9,6 +9,7 @@ import { Action, store } from './store'
 import './index.css'
 import router from './router'
 import { auth } from './services/firebase'
+import { APP_LOADED } from './services/mixpanel-events'
 
 const locales = {
   ...en_locale,
@@ -21,24 +22,25 @@ const i18n = createI18n({
   messages: locales
 })
 
-// mixpanel.track('App loaded', { genre: 'hip-hop', 'duration in seconds': 42 })
-// const USER_ID = '12148'
-// mixpanel.identify(USER_ID)
-// const USER_SIGNUP_DATE = '2020-01-02T21:07:03Z'
+mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN as string)
+mixpanel.track<null>(APP_LOADED)
 
-// mixpanel.people.set({
-//   $email: 'jsmith@example.com', // only reserved properties need the $
-//   'Sign up date': USER_SIGNUP_DATE, // Send dates in ISO timestamp format (e.g. "2020-01-02T21:07:03Z")
-//   USER_ID: USER_ID, // use human-readable names
-//   credits: 150 // ...or numbers
-// })
-let app
-auth.onAuthStateChanged((user) => {
+function bootstrapApp(app: VueApp<Element>) {
   app = createApp(App)
   app.component('LayoutDefault', LayoutDefault)
   app.use(i18n).use(router).use(store).mount('#app')
+  return app
+}
 
+let app: VueApp<Element>
+auth.onAuthStateChanged((user) => {
   if (user) {
-    store.dispatch(Action.FETCH_USER_PROFILE)
+    store.dispatch(Action.FETCH_USER_PROFILE, user).then(() => {
+      if (!app) {
+        app = bootstrapApp(app)
+      }
+    })
+  } else if (!app) {
+    app = bootstrapApp(app)
   }
 })

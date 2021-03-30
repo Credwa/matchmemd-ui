@@ -1,13 +1,12 @@
 import { ActionTree, ActionContext } from 'vuex'
 import router from '../router'
 import * as firebase from '../services/firebase'
-import { State } from './state'
+import { DEFAULT_USER, State } from './state'
 import { Mutations, Mutation } from './mutations'
 import { LoginForm, RegisterForm } from '../types/'
-import { ERROR_CODES } from '../services/constants'
+import { mixpanel_user_register, mixpanel_user_login } from '../services/mixpanel-events'
 
 export enum Action {
-  initApp = 'initApp',
   LOGIN = 'LOGIN',
   FETCH_USER_PROFILE = 'FETCH_USER_PROFILE',
   REGISTER = 'REGISTER',
@@ -22,47 +21,50 @@ type AugmentedActionContext = {
 } & Omit<ActionContext<State, State>, 'commit'>
 
 export interface Actions {
-  [Action.initApp]({ state, commit, dispatch }: AugmentedActionContext): void
   [Action.LOGIN]({ dispatch }: AugmentedActionContext, form: LoginForm): void
-  [Action.FETCH_USER_PROFILE]({ dispatch }: AugmentedActionContext, user: firebase.types.User): void
+  [Action.FETCH_USER_PROFILE]({ commit }: AugmentedActionContext, user: firebase.types.User): void
   [Action.REGISTER]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
-  [Action.LOGOUT]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
+  [Action.LOGOUT]({ dispatch }: AugmentedActionContext): void
 }
 
 export const actions: ActionTree<State, State> & Actions = {
-  [Action.initApp]() {
-    console.log('app inited!')
-  },
   async [Action.LOGIN]({ dispatch }, form) {
     // sign user in
     const { user } = await firebase.auth.signInWithEmailAndPassword(form.email, form.password)
 
-    // fetch user profile and set in state
-    dispatch(Action.FETCH_USER_PROFILE, user)
+    if (user) {
+      mixpanel_user_login(user)
+      // fetch user profile and set in state
+      dispatch(Action.FETCH_USER_PROFILE, user)
+    }
   },
 
-  async [Action.LOGOUT]({ commit }, form) {
+  async [Action.LOGOUT]({ commit }) {
     await firebase.auth.signOut()
 
     // clear userProfile and redirect to /login
-    commit(Mutation.SET_USER_PROFILE, {})
+    commit(Mutation.SET_USER_PROFILE, DEFAULT_USER)
     router.push('/login')
   },
 
   async [Action.REGISTER]({ dispatch }, form) {
     // sign user up
+    const DEFAULT_ROLE = 'USER'
     const { user } = await firebase.auth.createUserWithEmailAndPassword(form.email, form.password)
     // create user profile object in userCollections
     if (user) {
       await firebase.usersCollection.doc(user.uid).set({
         email: form.email,
         firstName: form.firstName,
-        lastName: form.lastName
+        lastName: form.lastName,
+        role: DEFAULT_ROLE,
+        created_at: Number((<{ a: number }>user.metadata).a),
+        last_signed_in: Number((<{ b: number }>user.metadata).b),
+        registrationComplete: false
       })
+      mixpanel_user_register(user, form)
       // fetch user profile and set in state
       dispatch(Action.FETCH_USER_PROFILE, user)
-    } else {
-      throw ERROR_CODES.FAILED_TO_CREATE_USER
     }
   },
 
@@ -70,16 +72,24 @@ export const actions: ActionTree<State, State> & Actions = {
     // fetch user profile
     if (user) {
       const userProfile = await firebase.usersCollection.doc(user.uid).get()
-
       // set user profile in state
-      commit(Mutation.SET_USER_PROFILE, userProfile.data())
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (
-        router.currentRoute.value.path === '/login' ||
-        router.currentRoute.value.path === '/register'
-      ) {
-        router.push('/dashboard')
+      if (userProfile) {
+        commit(Mutation.SET_USER_PROFILE, userProfile.data())
+        const previousRoute = router.options.history.state.back
+        if (
+          previousRoute !== '/login' &&
+          previousRoute !== '/register' &&
+          router.currentRoute.value.path !== '/login' &&
+          router.currentRoute.value.path !== '/register'
+        ) {
+          mixpanel.identify(user.uid)
+        }
+        if (
+          router.currentRoute.value.path === '/login' ||
+          router.currentRoute.value.path === '/register'
+        ) {
+          router.push('/dashboard')
+        }
       }
     }
   }

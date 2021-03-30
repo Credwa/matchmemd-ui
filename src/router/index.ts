@@ -3,6 +3,8 @@ import { auth } from '../services/firebase'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Dashboard from '@/views/Dashboard.vue'
+import Onboarding from '@/views/Onboarding.vue'
+import { Action, store } from '../store'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     component: Register
   },
   {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import(/* webpackChunkName: "policy" */ '@/views/ForgotPassword.vue')
+  },
+  {
     path: '/policy',
     name: 'Policy',
     component: () => import(/* webpackChunkName: "policy" */ '@/views/Policy.vue')
@@ -30,9 +37,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue')
   },
   {
-    path: '/register-flow',
-    name: 'RegisterFlow',
-    component: () => import(/* webpackChunkName: "terms" */ '@/views/RegisterFlow.vue'),
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import(/* webpackChunkName: "terms" */ '@/views/Onboard.vue'),
     meta: {
       requiresAuth: true
     }
@@ -52,12 +59,26 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   const requiresAuth = to.matched.some((x) => x.meta.requiresAuth)
+  const userProfile = store.getters.getUserProfile
   if (auth.currentUser && (to.name === 'Login' || to.name === 'Register')) {
     next('/dashboard')
-  }
-  if (requiresAuth && !auth.currentUser) {
+  } else if (
+    requiresAuth &&
+    auth.currentUser &&
+    !userProfile.registrationComplete &&
+    to.name !== 'Onboarding'
+  ) {
+    next('/onboarding')
+  } else if (
+    requiresAuth &&
+    auth.currentUser &&
+    userProfile.registrationComplete &&
+    to.name === 'Onboarding'
+  ) {
+    next('/dashboard')
+  } else if (requiresAuth && !auth.currentUser) {
     next('/login')
   } else {
     next()

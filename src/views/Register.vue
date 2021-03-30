@@ -2,13 +2,18 @@
   <LayoutDefault>
     <div class="w-screen px-3 mt-12">
       <header class="sm:mx-auto sm:w-full sm:max-w-md sm:mt-16">
-        <img
-          height="40"
-          width="210"
-          class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto"
-          src="/logo.svg"
-          alt="MatchMeMD"
-        />
+        <a
+          href="https://matchmemd.com
+        "
+        >
+          <img
+            height="40"
+            width="210"
+            class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto"
+            src="/logo.svg"
+            alt="MatchMeMD"
+        /></a>
+
         <h1
           class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
         >
@@ -18,11 +23,39 @@
 
       <main class="mt-2 sm:mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="sm:bg-white py-8 px-2 sm:shadow sm:rounded-lg sm:px-10">
+          <div
+            class="py-1 px-2 mb-8 rounded m-auto w-full bg-salmon-600 text-pacific-50"
+            v-if="registerError"
+          >
+            <div
+              class="flex items-center"
+              v-if="registerErrorObject.code === 'auth/email-already-in-use'"
+            >
+              <p class="leading-7 text-pacific-50 text-center">
+                {{ $t('locale.registerScreen.emailInUse.main') }}
+                <router-link
+                  class="matchmemd-text-link text-pacific-200 hover:text-pacific-100 font-normal"
+                  to="/login"
+                  >{{ $t('locale.registerScreen.emailInUse.login') }}</router-link
+                >
+                {{ $t('locale.registerScreen.emailInUse.or') }}
+                <router-link
+                  class="matchmemd-text-link text-pacific-200 hover:text-pacific-100 font-normal"
+                  to="/forgot-password"
+                  >{{ $t('locale.registerScreen.emailInUse.resetPassword') }}</router-link
+                >
+              </p>
+            </div>
+
+            <p v-else>{{ registerErrorObject.message }}</p>
+          </div>
           <form class="space-y-6" @submit="onSubmit">
             <div class="pb-1 flex flex-col">
               <div class="pb-1 flex flex-row space-x-3">
                 <div class="relative">
-                  <label v-show="false" for="firstName">First name</label>
+                  <label v-show="false" for="firstName">{{
+                    $t('locale.registerScreen.placeholderFirstName')
+                  }}</label>
                   <input
                     name="firstName"
                     type="text"
@@ -40,7 +73,9 @@
                 </div>
 
                 <div class="relative">
-                  <label v-show="false" for="lastName">Last name</label>
+                  <label v-show="false" for="lastName">{{
+                    $t('locale.registerScreen.placeholderLastName')
+                  }}</label>
                   <input
                     name="lastName"
                     type="text"
@@ -86,7 +121,9 @@
 
             <div class="pb-1">
               <div class="relative">
-                <label v-show="false" for="email">Email</label>
+                <label v-show="false" for="email">{{
+                  $t('locale.registerScreen.placeholderEmail')
+                }}</label>
                 <input
                   name="email"
                   type="email"
@@ -109,7 +146,9 @@
             </div>
 
             <div class="mb-2 relative rounded-md">
-              <label v-show="false" for="password">Password</label>
+              <label v-show="false" for="password">{{
+                $t('locale.registerScreen.placeholderPassword')
+              }}</label>
               <input
                 name="password"
                 type="password"
@@ -132,7 +171,7 @@
             </div>
             <div class="flex items-center justify-between pb-2">
               <div class="flex items-center">
-                <p class="text-sm leading-5 text-center font-sans">
+                <p class="text-sm leading-5 text-center">
                   {{ $t('locale.registerScreen.signUpAcceptance.main') }}
                   <router-link to="/terms" class="text-sm text-center matchmemd-text-link">
                     {{ $t('locale.registerScreen.signUpAcceptance.terms') }}
@@ -205,7 +244,7 @@
 
           <div class="flex justify-center flex-row sm:mt-12 mt-10">
             <p class="text-sm py-3 sm:py-1 text-gray-600">
-              {{ $t('locale.registerScreen.noAccount') }}
+              {{ $t('locale.registerScreen.accountExists') }}
             </p>
             <router-link to="/login" class="matchmemd-text-link text-sm ml-1 py-3 sm:py-1">
               {{ $t('locale.registerScreen.goToLogin') }}
@@ -225,6 +264,7 @@ import Tick from '@/components/Tick.vue'
 import { RegisterKeys, RegisterValues } from '../types/'
 import { useStore } from 'vuex'
 import { Action } from '../store/actions'
+import { REGISTRATION_FAILED } from '../services/mixpanel-events'
 
 export default {
   name: 'Register',
@@ -232,6 +272,9 @@ export default {
   setup() {
     const store = useStore()
     const { t } = useI18n()
+    const loading = ref(false)
+    const registerError = ref(false)
+    let registerErrorObject: Record<string, any> = ref({})
     document.title = t('locale.registerScreen.meta.title')
     // Define a validation schema
     const registerSchema = {
@@ -278,7 +321,6 @@ export default {
         return true
       }
     }
-    const loading = ref(false)
     const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: registerSchema })
 
     const { errorMessage: emailError, value: email, meta: emailMeta } = useField<string>(
@@ -324,7 +366,12 @@ export default {
         .then(() => {
           loading.value = false
         })
-        .catch(() => {
+        .catch((e) => {
+          let failedResults: Record<string, unknown> = { ...values, reason: e.code }
+          delete failedResults.password
+          registerError.value = true
+          mixpanel.track(REGISTRATION_FAILED, failedResults)
+          registerErrorObject.value = e
           loading.value = false
         })
     })
@@ -346,7 +393,9 @@ export default {
       lastNameError,
       lastNameMeta,
       registerEnabled,
-      loading
+      loading,
+      registerError,
+      registerErrorObject
     }
   }
 }
