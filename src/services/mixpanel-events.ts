@@ -6,13 +6,18 @@ export const APP_LOADED = 'APP_LOADED'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const REGISTRATION_FAILED = 'REGISTRATION_FAILED'
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST'
+export const ONBOARDING_BEGIN = 'ONBOARDING_BEGIN'
+export const ONBOARDING_SKIP = 'SKIP_ONBOARDING'
+export const ONBOARDING_NEXT = 'ONBOARDING_NEXT'
+export const ONBOARDING_BACK = 'ONBOARDING_BACK'
+export const BIRTHDAY_SELECTED = 'BIRTHDAY_SELECTED'
+export const COUNTRY_SELECTED = 'COUNTRY_SELECTED'
 
 const NEW_USER = 'NEW USER'
 const LOGIN = 'LOGIN'
 
 export const mixpanel_user_register = (user: types.User, form: RegisterForm): void => {
   mixpanel.alias(user.uid, mixpanel.get_distinct_id())
-  // mixpanel.identify(user.uid)
   mixpanel.people.set({
     $email: form.email,
     firstName: form.firstName,

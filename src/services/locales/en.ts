@@ -101,10 +101,25 @@ const en_locale = {
 
       onboardScreen: {
         skip: 'Skip',
-        completeProfile: 'Complete your profile',
+        completeProfile: 'Tell us about yourself',
         completeProfileDetailsOne:
           'Add a profile photo and answer a few questions so we can help you.',
-        addPhoto: 'Add photo'
+        addPhoto: 'Add a photo',
+        welcome: 'Welcome',
+        firstPage: '1 of 2',
+        secondPage: '2 of 2',
+        next: 'Next',
+        inputLabels: {
+          location: 'What country are you in?',
+          birthday: "When's your birthday?",
+          gender: {
+            title: 'Gender',
+            male: 'Male',
+            female: 'Female'
+          }
+        },
+        defaultSelectedCountryOption: 'Country',
+        defaultSelectedBirthday: 'mm / dd / yyyy'
       }
     }
   }

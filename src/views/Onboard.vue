@@ -1,97 +1,187 @@
 <template>
   <LayoutDefault>
     <div class="w-full">
-      <header class="w-full flex justify-center space-between px-4 pt-6">
+      <header class="sm:absolute w-full flex justify-center space-between px-4 pt-6 sm:pt-2">
         <p
           to="/onboarding
         "
-          class="text-xs leading-6 text-gray-600 py-2"
+          class="overflow- text-xs leading-6 text-gray-600 py-2 sm:hidden"
         >
-          1 of 2
+          {{ $t('locale.onboardScreen.firstPage') }}
         </p>
+        <a
+          class="hidden sm:block"
+          href="https://matchmemd.com
+        "
+        >
+          <img height="40" width="210" class="mx-auto h-6 w-auto" src="/logo.svg" alt="MatchMeMD"
+        /></a>
         <img
           height="40"
           width="210"
-          class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto"
+          class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto cursor-pointer sm:invisible"
           src="/matchmemd-icon.svg"
           alt="MatchMeMD"
         />
-        <p class="py-2 matchmemd-text-link font-normal" @click="skipOnboarding">
+        <p class="py-2 matchmemd-text-link font-normal sm:text-xs" @click="skipOnboarding">
           {{ $t('locale.onboardScreen.skip') }}
         </p>
       </header>
-      <div>
-        <section class="py-8 space-y-4 flex flex-col justify-center items-center">
-          <h1 class="text-2xl text-center leading-8 font-bold text-gray-700">
-            {{ $t('locale.onboardScreen.completeProfile') }}
-          </h1>
-          <p class="text-center text-gray-600 text-lg leading-6">
-            {{ $t('locale.onboardScreen.completeProfileDetailsOne') }}
-          </p>
-          <div class="w-full align-center flex justify-center pt-6">
-            <input
-              class="hidden"
-              type="file"
-              id="profilePicture"
-              name="profilePicture"
-              @change="previewFiles"
-            />
-            <label for="profilePicture">
-              <div class="flex flex-col justify-center items-center" v-if="!previewedPhoto">
-                <img :src="previewedPhoto.name" alt="profile picture" />
-                <p class="leading-6 text-gray-600">
-                  {{ previewedPhoto.name }}
-                </p>
-              </div>
-              <div class="flex flex-col justify-center items-center" v-else>
-                <span class="inline-block relative">
-                  <span
-                    class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gray-500"
-                  >
-                    <span class="text-xl font-medium leading-none text-pacific-50">{{
-                      initials
-                    }}</span>
-                  </span>
-                  <span class="absolute -top-2 right-0 block h-7 w-7 rounded-full">
-                    <svg
-                      class="text-pacific-600"
-                      viewBox="0 0 27 27"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect
-                        x="1"
-                        y="1"
-                        width="25"
-                        height="25"
-                        rx="12.5"
-                        fill="currentColor"
-                        stroke="currentColor"
-                      />
-                      <path
-                        d="M8.05133 11.2564C8.05133 10.5483 8.62532 9.97435 9.33338 9.97435H9.9293C10.358 9.97435 10.7583 9.76011 10.996 9.40345L11.5169 8.62217C11.7547 8.2655 12.155 8.05127 12.5836 8.05127H15.0575C15.4862 8.05127 15.8865 8.2655 16.1242 8.62217L16.6451 9.40345C16.8829 9.76011 17.2832 9.97435 17.7118 9.97435H18.3077C19.0158 9.97435 19.5898 10.5483 19.5898 11.2564V17.0256C19.5898 17.7337 19.0158 18.3077 18.3077 18.3077H9.33338C8.62532 18.3077 8.05133 17.7337 8.05133 17.0256V11.2564Z"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M15.7436 13.8205C15.7436 14.8826 14.8826 15.7436 13.8206 15.7436C12.7585 15.7436 11.8975 14.8826 11.8975 13.8205C11.8975 12.7584 12.7585 11.8974 13.8206 11.8974C14.8826 11.8974 15.7436 12.7584 15.7436 13.8205Z"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </span>
-                <p class="leading-6 text-gray-600">
-                  {{ $t('locale.onboardScreen.addPhoto') }}
-                </p>
-              </div>
-            </label>
+      <div class="sm:grid sm:grid-rows-3 sm:grid-cols-12 sm:gap-4 sm:h-full">
+        <section
+          class="sm:col-span-4 pt-8 sm:pt-0 sm:px-4 space-y-4 flex flex-col justify-center items-center sm:items-start sm:justify-start sm:bg-gray-200 sm:h-screen"
+        >
+          <div class="sm:mt-56 space-y-4">
+            <h1 class="text-2xl text-center sm:text-left leading-8 font-bold text-gray-700">
+              <p class="text-lg leading-10 font-normal">
+                {{ $t('locale.onboardScreen.welcome') }} {{ userProfile.firstName }}!
+              </p>
+              <p>
+                {{ $t('locale.onboardScreen.completeProfile') }}
+              </p>
+            </h1>
+            <p
+              class="text-center sm:text-left sm:text-sm text-gray-600 text-lg leading-6 px-2 sm:px-0"
+            >
+              {{ $t('locale.onboardScreen.completeProfileDetailsOne') }}
+            </p>
           </div>
         </section>
+
+        <main class="sm:col-span-8 sm:row-span-3 mt-1 px-4 sm:mt-20">
+          <div class="">
+            <div class="w-full align-center flex justify-center py-6">
+              <input
+                class="hidden"
+                type="file"
+                id="profilePicture"
+                name="profilePicture"
+                @change="previewFiles"
+                accept="image/*"
+              />
+              <label for="profilePicture">
+                <div
+                  class="flex sm:space-y-1.5 flex-col justify-center items-center cursor-pointer"
+                  v-show="previewedPhoto.file"
+                >
+                  <div class="inline-block relative">
+                    <img
+                      ref="profilePictureRef"
+                      class="h-16 w-16 rounded-full"
+                      :src="previewedPhoto.dataURL"
+                    />
+                    <span class="absolute -top-2 right-0 block h-7 w-7 rounded-full">
+                      <CameraSVG />
+                    </span>
+                  </div>
+
+                  <p class="leading-6 text-gray-600 sm:text-gray-500 sm:text-xs">
+                    {{ previewedPhoto?.file?.name || $t('locale.onboardScreen.addPhoto') }}
+                  </p>
+                </div>
+                <div
+                  class="flex sm:space-y-1.5 flex-col justify-center items-center cursor-pointer"
+                  v-show="!previewedPhoto.file"
+                >
+                  <span class="inline-block relative">
+                    <span
+                      class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gray-500"
+                    >
+                      <span class="text-xl font-medium leading-none text-pacific-50">{{
+                        initials
+                      }}</span>
+                    </span>
+                    <span
+                      class="absolute -top-2 right-0 block h-7 w-7 sm:h-5 sm:w-5 sm:-top-1 rounded-full"
+                    >
+                      <CameraSVG />
+                    </span>
+                  </span>
+                  <p class="leading-6 sm:text-xs text-gray-600 sm:text-gray-500">
+                    {{ $t('locale.onboardScreen.addPhoto') }}
+                  </p>
+                </div>
+              </label>
+            </div>
+            <form class="space-y- pt-2 max-w-xs m-auto" @submit="onSubmit">
+              <div class="space-y-4 pt-2">
+                <div class="space-y-3">
+                  <MatchMeMDSelect
+                    inputKey="location"
+                    v-on:optionChanged="onLocationChange"
+                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedCountryOption')"
+                    :label="$t('locale.onboardScreen.inputLabels.location')"
+                  />
+                  <MatchMeMDDatePicker
+                    v-on:dateChanged="onBirthdayChange"
+                    :label="$t('locale.onboardScreen.inputLabels.birthday')"
+                  />
+                </div>
+                <div>
+                  <div role="group" aria-labelledby="label-notifications">
+                    <div class="">
+                      <div>
+                        <div
+                          class="block font-normal text-gray-600 sm:text-xs"
+                          id="label-notifications"
+                        >
+                          {{ $t('locale.onboardScreen.inputLabels.gender.title') }}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="max-w-lg">
+                          <div class="mt-2 space-y-4">
+                            <div class="flex items-center">
+                              <input
+                                id="gender_male"
+                                name="gender"
+                                v-model="gender"
+                                value="male"
+                                type="radio"
+                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                              />
+                              <label
+                                for="gender_male"
+                                class="ml-3 block text-sm font-medium leading-5 text-gray-600 sm:text-xs"
+                              >
+                                {{ $t('locale.onboardScreen.inputLabels.gender.male') }}
+                              </label>
+                            </div>
+                            <div class="flex items-center">
+                              <input
+                                v-model="gender"
+                                id="gender_female"
+                                name="gender"
+                                value="female"
+                                type="radio"
+                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                              />
+                              <label
+                                for="gender_female"
+                                class="ml-3 block text-sm font-medium leading-5 text-gray-600 sm:text-xs"
+                              >
+                                {{ $t('locale.onboardScreen.inputLabels.gender.female') }}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="py-6">
+                  <button
+                    @click.prevent="nextPage"
+                    class="matchmemd-button sm:text-xs has-tooltip w-full"
+                  >
+                    <div>{{ $t('locale.onboardScreen.next') }}</div>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </main>
       </div>
     </div>
   </LayoutDefault>
@@ -101,29 +191,84 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import CameraSVG from '@/components/CameraSVG.vue'
+import MatchMeMDSelect from '@/components/MatchMeMDSelect.vue'
+import MatchMeMDDatePicker from '@/components/MatchMeMDDatePicker.vue'
+import {
+  ONBOARDING_SKIP,
+  ONBOARDING_BEGIN,
+  ONBOARDING_NEXT,
+  ONBOARDING_BACK,
+  COUNTRY_SELECTED,
+  BIRTHDAY_SELECTED
+} from '../services/mixpanel-events'
 
 export default {
   name: 'Onboard',
+  components: { CameraSVG, MatchMeMDSelect, MatchMeMDDatePicker },
   setup() {
+    mixpanel.track(ONBOARDING_BEGIN)
     const router = useRouter()
     const store = useStore()
+    const profilePictureCanvasRef = ref()
+    const isPageTwo = ref(false)
+    const profilePictureRef = ref()
     const userProfile = store.getters.getUserProfile
     const previewedPhoto = ref({})
+    const gender = ref()
     const initials = computed(
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
 
     function previewFiles(event) {
-      console.log(event.target.files)
-      previewedPhoto.value = event.target.files[0]
+      const reader = new FileReader()
+      const uploadedFile = event.target.files[0]
+      reader.onload = () => {
+        previewedPhoto.value = { dataURL: reader.result, file: uploadedFile }
+      }
+      if (uploadedFile) {
+        reader.readAsDataURL(uploadedFile)
+      }
     }
 
     function skipOnboarding() {
-      console.log(router)
+      mixpanel.track(ONBOARDING_SKIP)
       router.push('/dashboard')
     }
 
-    return { skipOnboarding, initials, previewFiles, previewedPhoto }
+    function onLocationChange(e) {
+      mixpanel.track(COUNTRY_SELECTED)
+      console.log(e)
+    }
+
+    function onBirthdayChange(e) {
+      console.log(e)
+      mixpanel.track(BIRTHDAY_SELECTED)
+    }
+
+    function nextPage() {
+      mixpanel.track(ONBOARDING_NEXT)
+      isPageTwo.value = true
+    }
+
+    function back() {
+      mixpanel.track(ONBOARDING_BACK)
+      isPageTwo.value = false
+    }
+
+    return {
+      skipOnboarding,
+      initials,
+      previewFiles,
+      previewedPhoto,
+      userProfile,
+      profilePictureCanvasRef,
+      profilePictureRef,
+      onLocationChange,
+      onBirthdayChange,
+      nextPage,
+      gender
+    }
   }
 }
 </script>

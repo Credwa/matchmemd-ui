@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
 import { createI18n } from 'vue-i18n'
 import { createApp, App as VueApp } from 'vue'
+import VCalendar from 'v-calendar'
 import { en_locale, ja_locale } from './services/locales'
 import LayoutDefault from '@/layouts/LayoutDefault.vue'
 import App from './App.vue'
@@ -28,7 +27,7 @@ mixpanel.track<null>(APP_LOADED)
 function bootstrapApp(app: VueApp<Element>) {
   app = createApp(App)
   app.component('LayoutDefault', LayoutDefault)
-  app.use(i18n).use(router).use(store).mount('#app')
+  app.use(i18n).use(VCalendar).use(router).use(store).mount('#app')
   return app
 }
 
