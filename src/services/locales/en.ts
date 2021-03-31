@@ -104,11 +104,17 @@ const en_locale = {
         completeProfile: 'Tell us about yourself',
         completeProfileDetailsOne:
           'Add a profile photo and answer a few questions so we can help you.',
+        completeProfileTwo: 'Tell us about your education',
+        completeProfileDetailsTwo:
+          'Next answer some questions about your medical education and interests. ',
+        upNext: 'Up next...',
         addPhoto: 'Add a photo',
         welcome: 'Welcome',
         firstPage: '1 of 2',
         secondPage: '2 of 2',
-        next: 'Next',
+        nextButton: 'Next',
+        finishButton: 'Finish',
+        backButton: 'Back',
         inputLabels: {
           location: 'What country are you in?',
           birthday: "When's your birthday?",
@@ -119,7 +125,12 @@ const en_locale = {
           }
         },
         defaultSelectedCountryOption: 'Country',
-        defaultSelectedBirthday: 'mm / dd / yyyy'
+        defaultSelectedBirthday: 'mm / dd / yyyy',
+        stepper: {
+          medicalInterests: 'Medical interests',
+          aboutYou: 'About you',
+          accountCreated: 'Account created'
+        }
       }
     }
   }

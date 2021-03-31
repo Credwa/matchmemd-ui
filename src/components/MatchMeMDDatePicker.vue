@@ -3,8 +3,7 @@
     <label :id="inputKey" class="block font-normal text-gray-700 sm:text-xs"> {{ label }} </label>
     <div class="mt-1 relative">
       <button
-        @click="toggleDatePickerState"
-        @blur="toggleDatePickerState(false)"
+        @click="toggleDatePickerState()"
         type="button"
         class="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-pacific-500 focus:border-pacific-500 sm:text-sm"
         aria-haspopup="listbox"
@@ -17,9 +16,9 @@
           </div>
           <div class="text-gray-700 block truncate sm:text-xs" v-else>{{ date }}</div>
         </span>
-        <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+        <span class="absolute inset-y-0 -top-1 right-0 flex items-center pr-2 pointer-events-none">
           <svg
-            class="h-5 w-5 text-gray-400"
+            class="h-5 w-5 sm:h-4 sm:w-4 text-gray-400"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
@@ -64,13 +63,14 @@ import { useI18n } from 'vue-i18n'
 export default {
   props: {
     label: String,
-    inputKey: String
+    inputKey: String,
+    defaultSelectedOption: String
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const { t } = useI18n()
     const firstDateValueAlreadyChanged = ref(false)
     const datePickerState = ref(false)
-    const selectedOption = ref(t('locale.onboardScreen.defaultSelectedOption'))
+    const selectedOption = ref(props.defaultSelectedOption)
     const date = ref(new Date(1995, 0, 1))
     const isDateSelected = ref(false)
     const inputValue = ref()
@@ -92,7 +92,7 @@ export default {
         e.day === 1 &&
         firstDateValueAlreadyChanged
       ) {
-        date.value = e.date.toLocaleDateString(_, {
+        date.value = e.date.toLocaleDateString(undefined, {
           year: 'numeric',
           month: '2-digit',
           day: '2-digit'

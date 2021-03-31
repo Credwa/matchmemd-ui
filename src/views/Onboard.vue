@@ -31,24 +31,36 @@
         <section
           class="sm:col-span-4 pt-8 sm:pt-0 sm:px-4 space-y-4 flex flex-col justify-center items-center sm:items-start sm:justify-start sm:bg-gray-200 sm:h-screen"
         >
-          <div class="sm:mt-56 space-y-4">
+          <div class="sm:mt-24 space-y-4">
             <h1 class="text-2xl text-center sm:text-left leading-8 font-bold text-gray-700">
               <p class="text-lg leading-10 font-normal">
-                {{ $t('locale.onboardScreen.welcome') }} {{ userProfile.firstName }}!
+                {{
+                  !isPageTwo
+                    ? `${$t('locale.onboardScreen.welcome')} ${userProfile.firstName}!`
+                    : $t('locale.onboardScreen.upNext')
+                }}
               </p>
               <p>
-                {{ $t('locale.onboardScreen.completeProfile') }}
+                {{
+                  !isPageTwo
+                    ? $t('locale.onboardScreen.completeProfile')
+                    : $t('locale.onboardScreen.completeProfileTwo')
+                }}
               </p>
             </h1>
             <p
               class="text-center sm:text-left sm:text-sm text-gray-600 text-lg leading-6 px-2 sm:px-0"
             >
-              {{ $t('locale.onboardScreen.completeProfileDetailsOne') }}
+              {{
+                !isPageTwo
+                  ? $t('locale.onboardScreen.completeProfileDetailsOne')
+                  : $t('locale.onboardScreen.completeProfileDetailsTwo')
+              }}
             </p>
           </div>
+          <OnboardingStepper :isPageTwo="isPageTwo" class="hidden sm:block pt-12" />
         </section>
-
-        <main class="sm:col-span-8 sm:row-span-3 mt-1 px-4 sm:mt-20">
+        <main class="sm:col-span-8 sm:row-span-3 mt-1 px-4 sm:mt-20" v-if="!isPageTwo">
           <div class="">
             <div class="w-full align-center flex justify-center py-6">
               <input
@@ -115,6 +127,7 @@
                   <MatchMeMDDatePicker
                     v-on:dateChanged="onBirthdayChange"
                     :label="$t('locale.onboardScreen.inputLabels.birthday')"
+                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedOption')"
                   />
                 </div>
                 <div>
@@ -143,7 +156,7 @@
                               />
                               <label
                                 for="gender_male"
-                                class="ml-3 block text-sm font-medium leading-5 text-gray-600 sm:text-xs"
+                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
                               >
                                 {{ $t('locale.onboardScreen.inputLabels.gender.male') }}
                               </label>
@@ -159,7 +172,7 @@
                               />
                               <label
                                 for="gender_female"
-                                class="ml-3 block text-sm font-medium leading-5 text-gray-600 sm:text-xs"
+                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
                               >
                                 {{ $t('locale.onboardScreen.inputLabels.gender.female') }}
                               </label>
@@ -175,7 +188,92 @@
                     @click.prevent="nextPage"
                     class="matchmemd-button sm:text-xs has-tooltip w-full"
                   >
-                    <div>{{ $t('locale.onboardScreen.next') }}</div>
+                    <div>{{ $t('locale.onboardScreen.nextButton') }}</div>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </main>
+
+        <main class="sm:col-span-8 sm:row-span-3 mt-16 px-4 sm:mt-20" v-else>
+          <div class="">
+            <form class="space-y- pt-2 max-w-xs m-auto" @submit="onSubmit">
+              <div class="space-y-4 pt-2">
+                <div class="space-y-3">
+                  <MatchMeMDSelect
+                    inputKey="location"
+                    v-on:optionChanged="onLocationChange"
+                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedCountryOption')"
+                    :label="$t('locale.onboardScreen.inputLabels.location')"
+                  />
+                  <MatchMeMDDatePicker
+                    v-on:dateChanged="onBirthdayChange"
+                    :label="$t('locale.onboardScreen.inputLabels.birthday')"
+                  />
+                </div>
+                <div>
+                  <div role="group" aria-labelledby="label-notifications">
+                    <div class="">
+                      <div>
+                        <div
+                          class="block font-normal text-gray-600 sm:text-xs"
+                          id="label-notifications"
+                        >
+                          {{ $t('locale.onboardScreen.inputLabels.gender.title') }}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="max-w-lg">
+                          <div class="mt-2 space-y-4">
+                            <div class="flex items-center">
+                              <input
+                                id="gender_male"
+                                name="gender"
+                                v-model="gender"
+                                value="male"
+                                type="radio"
+                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                              />
+                              <label
+                                for="gender_male"
+                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
+                              >
+                                {{ $t('locale.onboardScreen.inputLabels.gender.male') }}
+                              </label>
+                            </div>
+                            <div class="flex items-center">
+                              <input
+                                v-model="gender"
+                                id="gender_female"
+                                name="gender"
+                                value="female"
+                                type="radio"
+                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                              />
+                              <label
+                                for="gender_female"
+                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
+                              >
+                                {{ $t('locale.onboardScreen.inputLabels.gender.female') }}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="py-6 flex flex-row space-x-4">
+                  <button
+                    @click.prevent="back"
+                    class="matchmemd-button-negative sm:text-xs has-tooltip w-full"
+                  >
+                    <div>{{ $t('locale.onboardScreen.backButton') }}</div>
+                  </button>
+                  <button class="matchmemd-button sm:text-xs has-tooltip w-full">
+                    <div>{{ $t('locale.onboardScreen.finishButton') }}</div>
                   </button>
                 </div>
               </div>
@@ -194,6 +292,7 @@ import { useStore } from 'vuex'
 import CameraSVG from '@/components/CameraSVG.vue'
 import MatchMeMDSelect from '@/components/MatchMeMDSelect.vue'
 import MatchMeMDDatePicker from '@/components/MatchMeMDDatePicker.vue'
+import OnboardingStepper from '@/components/OnboardingStepper.vue'
 import {
   ONBOARDING_SKIP,
   ONBOARDING_BEGIN,
@@ -205,7 +304,7 @@ import {
 
 export default {
   name: 'Onboard',
-  components: { CameraSVG, MatchMeMDSelect, MatchMeMDDatePicker },
+  components: { CameraSVG, MatchMeMDSelect, MatchMeMDDatePicker, OnboardingStepper },
   setup() {
     mixpanel.track(ONBOARDING_BEGIN)
     const router = useRouter()
@@ -267,7 +366,9 @@ export default {
       onLocationChange,
       onBirthdayChange,
       nextPage,
-      gender
+      gender,
+      isPageTwo,
+      back
     }
   }
 }

@@ -11,7 +11,7 @@
         aria-expanded="true"
         :aria-labelledby="inputKey"
       >
-        <span v-if="!isDefaultOptionSelected" class="block truncate text-pacific-900 sm:text-xs">
+        <span v-if="!isDefaultOptionSelected" class="text-pacific-900 sm:text-xs">
           {{ selectedOption }}
         </span>
         <span class="text-gray-500 sm:text-xs" v-else>{{ selectedOption }}</span>
