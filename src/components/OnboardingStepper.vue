@@ -29,7 +29,9 @@
             </span>
           </span>
           <span class="ml-4 mt-2 min-w-0 flex flex-col">
-            <span class="text-xs leading-5 font-semibold tracking-wide">Account created</span>
+            <span class="text-xs leading-5 font-semibold tracking-wide">{{
+              $t('locale.onboardScreen.stepper.accountCreated')
+            }}</span>
           </span>
         </div>
       </li>
@@ -41,13 +43,14 @@
         ></div>
         <!-- Current Step -->
         <div
-          :class="[!isPageTwo ? 'cursor-default' : 'cursor-pointer']"
+          :class="[!isPageTwoRef ? 'cursor-default' : 'cursor-pointer']"
           class="relative flex items-start group"
           aria-current="step"
+          @click="stepperChange(false)"
         >
           <span class="h-9 flex items-center" aria-hidden="true">
             <span
-              v-if="!isPageTwo"
+              v-if="!isPageTwoRef"
               class="relative z-10 w-5 h-5 flex items-center justify-center bg-white border-2 border-pacific-600 rounded-full hover:border-pacific-700"
             >
               <span class="h-2 w-2 bg-pacific-600 rounded-full hover:bg-pacific-700"></span>
@@ -76,9 +79,9 @@
           </span>
 
           <span class="ml-4 mt-2 min-w-0 flex flex-col">
-            <span class="text-xs leading-5 font-semibold tracking-wide text-pacific-600"
-              >About you</span
-            >
+            <span class="text-xs leading-5 font-semibold tracking-wide text-pacific-600">{{
+              $t('locale.onboardScreen.stepper.aboutYou')
+            }}</span>
           </span>
         </div>
       </li>
@@ -86,11 +89,11 @@
       <li class="relative pb-10">
         <!-- Upcoming Step -->
         <div
-          :class="[isPageTwo ? 'cursor-default' : 'cursor-pointer']"
+          :class="[isPageTwoRef ? 'cursor-default' : 'cursor-pointer']"
           class="relative flex items-start group"
-          @click="isPageTwo = isPageTwo = true"
+          @click="stepperChange(true)"
         >
-          <span v-if="!isPageTwo" class="h-9 flex items-center" aria-hidden="true">
+          <span v-if="!isPageTwoRef" class="h-9 flex items-center" aria-hidden="true">
             <span
               class="relative z-10 w-5 h-5 flex items-center justify-center bg-white border-2 border-gray-300 rounded-full group-hover:border-gray-400"
             >
@@ -104,9 +107,9 @@
             <span class="h-2 w-2 bg-pacific-600 rounded-full hover:bg-pacific-700"></span>
           </span>
           <span class="ml-4 mt-2 min-w-0 flex flex-col">
-            <span class="text-xs leading-5 font-semibold tracking-wide text-gray-500"
-              >Medical interests</span
-            >
+            <span class="text-xs leading-5 font-semibold tracking-wide text-gray-500">{{
+              $t('locale.onboardScreen.stepper.medicalInterests')
+            }}</span>
           </span>
         </div>
       </li>
@@ -115,10 +118,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { ref } from 'vue'
+
 export default {
   props: {
     isPageTwo: Boolean
+  },
+  setup(props, { emit }) {
+    const isPageTwoRef = ref(props.isPageTwo)
+    function stepperChange(val: boolean) {
+      isPageTwoRef.value = val
+      emit('stepperChanged', val)
+    }
+    return { stepperChange, isPageTwoRef }
   }
 }
 </script>

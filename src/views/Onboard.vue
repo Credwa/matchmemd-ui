@@ -1,7 +1,9 @@
 <template>
   <LayoutDefault>
-    <div class="w-full">
-      <header class="sm:absolute w-full flex justify-center space-between px-4 pt-6 sm:pt-2">
+    <div class="max-w-5xl">
+      <header
+        class="sm:absolute max-w-5xl w-full flex justify-center space-between px-4 pt-6 sm:pt-2"
+      >
         <p
           to="/onboarding
         "
@@ -9,13 +11,9 @@
         >
           {{ $t('locale.onboardScreen.firstPage') }}
         </p>
-        <a
-          class="hidden sm:block"
-          href="https://matchmemd.com
-        "
-        >
+        <router-link class="hidden sm:block" to="/onboarding">
           <img height="40" width="210" class="mx-auto h-6 w-auto" src="/logo.svg" alt="MatchMeMD"
-        /></a>
+        /></router-link>
         <img
           height="40"
           width="210"
@@ -58,7 +56,11 @@
               }}
             </p>
           </div>
-          <OnboardingStepper :isPageTwo="isPageTwo" class="hidden sm:block pt-12" />
+          <OnboardingStepper
+            :isPageTwo="isPageTwo"
+            class="hidden sm:block pt-8"
+            v-on:stepperChanged="onStepperChange"
+          />
         </section>
         <main class="sm:col-span-8 sm:row-span-3 mt-1 px-4 sm:mt-20" v-if="!isPageTwo">
           <div class="">
@@ -127,7 +129,7 @@
                   <MatchMeMDDatePicker
                     v-on:dateChanged="onBirthdayChange"
                     :label="$t('locale.onboardScreen.inputLabels.birthday')"
-                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedOption')"
+                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedCountryOption')"
                   />
                 </div>
                 <div>
@@ -230,6 +232,7 @@
                             <div class="flex items-center">
                               <input
                                 id="gender_male"
+                                @change="onGenderChange"
                                 name="gender"
                                 v-model="gender"
                                 value="male"
@@ -246,6 +249,7 @@
                             <div class="flex items-center">
                               <input
                                 v-model="gender"
+                                @change="onGenderChange"
                                 id="gender_female"
                                 name="gender"
                                 value="female"
@@ -285,7 +289,7 @@
   </LayoutDefault>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
@@ -299,7 +303,8 @@ import {
   ONBOARDING_NEXT,
   ONBOARDING_BACK,
   COUNTRY_SELECTED,
-  BIRTHDAY_SELECTED
+  BIRTHDAY_SELECTED,
+  ONBOARDING_STEPPER_CHANGED
 } from '../services/mixpanel-events'
 
 export default {
@@ -319,9 +324,9 @@ export default {
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
 
-    function previewFiles(event) {
+    function previewFiles(event: Event) {
       const reader = new FileReader()
-      const uploadedFile = event.target.files[0]
+      const uploadedFile = (<EventTarget & { files: FileList }>event.target).files[0]
       reader.onload = () => {
         previewedPhoto.value = { dataURL: reader.result, file: uploadedFile }
       }
@@ -355,6 +360,16 @@ export default {
       isPageTwo.value = false
     }
 
+    function onGenderChange() {
+      console.log('gender :>> ', gender)
+    }
+
+    function onStepperChange(value: boolean) {
+      console.log(value)
+      mixpanel.track(ONBOARDING_STEPPER_CHANGED, value)
+      isPageTwo.value = value
+    }
+
     return {
       skipOnboarding,
       initials,
@@ -368,7 +383,9 @@ export default {
       nextPage,
       gender,
       isPageTwo,
-      back
+      back,
+      onGenderChange,
+      onStepperChange
     }
   }
 }

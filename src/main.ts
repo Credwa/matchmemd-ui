@@ -28,6 +28,7 @@ function bootstrapApp(app: VueApp<Element>) {
   app = createApp(App)
   app.component('LayoutDefault', LayoutDefault)
   app.use(i18n).use(VCalendar).use(router).use(store).mount('#app')
+  // window.__VUE_DEVTOOLS_GLOBAL_HOOK__.Vue = app.constructor
   return app
 }
 
