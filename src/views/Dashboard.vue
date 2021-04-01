@@ -7,10 +7,10 @@
           <div class="flex">
             <div class="flex-shrink-0 flex items-center">
               <router-link to="/dashboard"
-                ><img class="block lg:hidden h-8 w-auto" src="matchmemd-icon.svg" alt="MatchMeMD"
+                ><img class="block lg:hidden h-8 w-auto" src="/matchmemd-icon.svg" alt="MatchMeMD"
               /></router-link>
               <router-link to="/dashboard">
-                <img class="hidden lg:block h-8 w-auto" src="logo.svg" alt="MatchMeMD"
+                <img class="hidden lg:block h-8 w-auto" src="/logo.svg" alt="MatchMeMD"
               /></router-link>
             </div>
             <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
