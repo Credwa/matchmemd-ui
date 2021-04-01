@@ -1349,7 +1349,3 @@ export default {
 }
 /* END CUSTOM SCROLLBAR */
 </style>
-
-function ONBOARDING_FINISHED(ONBOARDING_FINISHED: any) { throw new Error('Function not
-implemented.') } function ONBOARDING_FINISHED(ONBOARDING_FINISHED: any) { throw new Error('Function
-not implemented.') }
