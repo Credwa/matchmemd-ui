@@ -7,7 +7,7 @@
     "serve:staging": "vite build --mode staging && npx http-server dist/",
     "serve:production": "vite build --mode production && npx http-server dist/",
     "build:production": "vite build --mode production",
-    "build:staging": "vite build --mode staging",
+    "build:staging": "vite build",
     "start": "yarn dev & wait-on tcp:3000 -v",
     "test": "cypress open",
     "test:ci": "cypress run --headless"
