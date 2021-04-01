@@ -6,6 +6,7 @@ import { actions, Actions, Action } from './actions'
 import { getters, Getters } from './getters'
 import { state } from './state'
 import type { State } from './state'
+import { UserProfile } from '../types'
 
 export const key: InjectionKey<VuexStore<State>> = Symbol('')
 
@@ -30,7 +31,7 @@ export type Store = Omit<VuexStore<State>, 'getters' | 'commit' | 'dispatch'> & 
   ): ReturnType<Actions[K]>
 } & {
   getters: {
-    [K in keyof Getters]: ReturnType<Getters[K]>
+    getUserProfile: UserProfile
   }
 }
 

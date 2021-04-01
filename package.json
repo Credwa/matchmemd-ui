@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "serve:staging": "yarn build --mode staging && npx http-server dist/",
-    "serve:production": "yarn build --mode production && npx http-server dist/",
+    "serve:staging": "vite build --mode staging && npx http-server dist/",
+    "serve:production": "vite build --mode production && npx http-server dist/",
     "build:production": "vite build --mode production",
     "build:staging": "vite build --mode staging",
     "start": "yarn dev & wait-on tcp:3000 -v",
