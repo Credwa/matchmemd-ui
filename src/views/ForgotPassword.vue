@@ -105,7 +105,6 @@ export default {
   setup() {
     const { t } = useI18n()
     const resetError = ref(false)
-    const rememberMe = ref(false)
     const passwordResetSuccess = ref(false)
     document.title = t('locale.forgotPasswordScreen.meta.title')
     // Define a validation schema
@@ -125,20 +124,9 @@ export default {
       validationSchema: passwordResetSchema
     })
 
-    const { errorMessage: emailError, value: email, meta: emailMeta } = useField<string>(
-      'email',
-      undefined,
-      {
-        initialValue: ''
-      }
-    )
-    const { errorMessage: passwordError, value: password, meta: passwordMeta } = useField<string>(
-      'password',
-      undefined,
-      {
-        initialValue: ''
-      }
-    )
+    const { value: email, meta: emailMeta } = useField<string>('email', undefined, {
+      initialValue: ''
+    })
 
     const resetEnabled = computed(() => emailMeta.valid)
 
@@ -166,15 +154,10 @@ export default {
       isSubmitting,
       errors,
       email,
-      emailError,
       emailMeta,
-      password,
-      passwordError,
-      passwordMeta,
       resetEnabled,
       loading,
       resetError,
-      rememberMe,
       passwordResetSuccess
     }
   }

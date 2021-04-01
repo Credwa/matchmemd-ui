@@ -117,15 +117,72 @@ const en_locale = {
         backButton: 'Back',
         inputLabels: {
           location: 'What country are you in?',
-          birthday: "When's your birthday?",
+          birthday: "What's your date of birth?",
           gender: {
             title: 'Gender',
             male: 'Male',
             female: 'Female'
+          },
+          educationalStatus: {
+            title: 'What is your educational status?',
+            medicalStudent: 'Medical student',
+            medicalGraduate: 'Medical graduate',
+            nursingStudent: 'Nursing student',
+            nursePractitioner: 'Nurse practitioner'
+          },
+          school: {
+            attend: 'Which medical university did you attend?',
+            schoolName: 'School name'
+          },
+          hasClinicalInterest: {
+            interested: 'Are you interested in doing clinicals in the U.S?',
+            yes: 'Yes',
+            no: 'No'
+          },
+          startDate: {
+            title: 'When would you like to start?',
+            early: '0-3 months',
+            medium: '3-6 months',
+            late: '6-12 months',
+            veryLate: '1 year or later'
+          },
+          clinical: {
+            title: 'Which clinicals are you interested in?',
+            core: 'Core rotations',
+            elective: 'Elective rotations',
+            observership: 'Observerships'
+          },
+          specialties: {
+            selectAll: 'Select all',
+            removeAll: 'Remove all',
+            title: 'Select specialties you are interested in.',
+            anesthesiology: 'Anesthesiology',
+            cardiology: 'Cardiology',
+            dermatology: 'Dermatology',
+            emergencyMedicine: 'Emergency medicine',
+            endocrinology: 'Endocrinology',
+            familyMedicine: 'Family medicine',
+            gastroenterology: 'Gastroenterology',
+            generalSurgery: 'General surgery',
+            geriatricMedicine: 'Geriatric medicine',
+            hematologyOncology: 'Hematology & Oncology',
+            infectiousDisease: 'Infectious disease',
+            internalMedicine: 'Internal medicine',
+            nephrology: 'Nephrology',
+            neurology: 'Neurology',
+            obstetricsGynecology: 'Obstetrics & Gynecology',
+            pediatrics: 'Pediatrics',
+            psychiatry: 'Psychiatry',
+            urgentCare: 'Urgent Care'
+          },
+          visa: {
+            title: 'Do you need a VISA for U.S clinicals?',
+            yes: 'Yes',
+            no: 'No'
           }
         },
         defaultSelectedCountryOption: 'Country',
-        defaultSelectedBirthday: 'mm / dd / yyyy',
+        defaultSelectedBirthday: 'Date of birth',
         stepper: {
           medicalInterests: 'Medical interests',
           aboutYou: 'About you',

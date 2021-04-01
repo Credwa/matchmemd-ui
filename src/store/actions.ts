@@ -3,14 +3,15 @@ import router from '../router'
 import * as firebase from '../services/firebase'
 import { DEFAULT_USER, State } from './state'
 import { Mutations, Mutation } from './mutations'
-import { LoginForm, RegisterForm } from '../types/'
+import { LoginForm, RegisterForm, UserProfile } from '../types/'
 import { mixpanel_user_register, mixpanel_user_login } from '../services/mixpanel-events'
 
 export enum Action {
   LOGIN = 'LOGIN',
   FETCH_USER_PROFILE = 'FETCH_USER_PROFILE',
   REGISTER = 'REGISTER',
-  LOGOUT = 'LOGOUT'
+  LOGOUT = 'LOGOUT',
+  UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE'
 }
 
 type AugmentedActionContext = {
@@ -23,6 +24,10 @@ type AugmentedActionContext = {
 export interface Actions {
   [Action.LOGIN]({ dispatch }: AugmentedActionContext, form: LoginForm): void
   [Action.FETCH_USER_PROFILE]({ commit }: AugmentedActionContext, user: firebase.types.User): void
+  [Action.UPDATE_USER_PROFILE](
+    { commit }: AugmentedActionContext,
+    payload: Partial<UserProfile>
+  ): void
   [Action.REGISTER]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
   [Action.LOGOUT]({ dispatch }: AugmentedActionContext): void
 }
@@ -91,6 +96,15 @@ export const actions: ActionTree<State, State> & Actions = {
           router.push('/dashboard')
         }
       }
+    }
+  },
+
+  async [Action.UPDATE_USER_PROFILE]({ commit, state }, payload: Partial<UserProfile>) {
+    if (firebase.auth.currentUser?.uid) {
+      await firebase.usersCollection
+        .doc(firebase.auth.currentUser?.uid)
+        .set(payload, { merge: true })
+      commit(Mutation.SET_USER_PROFILE, { ...state.userProfile, ...payload })
     }
   }
 }

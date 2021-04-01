@@ -1,23 +1,25 @@
 <template>
   <div>
-    <label :id="inputKey" class="block font-normal text-gray-700 sm:text-xs"> {{ label }} </label>
+    <label :id="inputKey" class="matchmemd-input-label">
+      {{ label }}
+    </label>
     <div class="mt-1 relative">
       <button
         @click="toggleSelectState"
         @blur="toggleSelectState(false)"
         type="button"
-        class="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 sm:py-1.5 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-pacific-500 focus:border-pacific-500 sm:text-sm"
+        class="bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-pacific-500 focus:border-pacific-500 sm:text-base"
         aria-haspopup="listbox"
         aria-expanded="true"
         :aria-labelledby="inputKey"
       >
-        <span v-if="!isDefaultOptionSelected" class="text-pacific-900 sm:text-xs">
+        <span v-if="!isDefaultOptionSelected" class="text-pacific-900 sm:text-base">
           {{ selectedOption }}
         </span>
-        <span class="text-gray-500 sm:text-xs" v-else>{{ selectedOption }}</span>
+        <span class="text-gray-500 sm:text-base" v-else>{{ selectedOption }}</span>
         <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <svg
-            class="h-5 w-5 sm:h-4 sm:w-4 text-gray-400"
+            class="h-5 w-5 text-gray-400"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -42,7 +44,7 @@
       >
         <ul
           v-show="selectState"
-          class="z-50 absolute mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+          class="z-50 absolute mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-base"
           tabindex="-1"
           role="listbox"
           :aria-labelledby="inputKey"
@@ -293,6 +295,7 @@ export default {
       'Ukraine',
       'United Arab Emirates',
       'United Kingdom',
+      'United States of America',
       'Uruguay',
       'Uzbekistan',
       'Venezuela',

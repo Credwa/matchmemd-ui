@@ -4,7 +4,6 @@ export interface State {
   debug: boolean
   version: string
   isInitialized: boolean
-  count: number
   userProfile: UserProfile
 }
 
@@ -24,6 +23,5 @@ export const state: State = {
   debug: import.meta.env.MODE === 'development',
   version: versionString,
   isInitialized: false,
-  count: 0,
   userProfile: DEFAULT_USER
 }

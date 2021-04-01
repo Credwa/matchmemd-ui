@@ -16,4 +16,17 @@ export interface UserProfile {
   created_at: UTCNumber
   last_signed_in: UTCNumber
   registrationComplete: boolean
+  dateOfBirth?: number
+  imageUploaded?: boolean
+  country?: string
+  gender?: string
+  onboardData?: {
+    school?: string
+    specialties?: string[]
+    clinical?: string[]
+    medicalStatus?: string
+    visaRequired?: boolean
+    startDate?: string
+    hasClinicalInterest?: boolean
+  }
 }

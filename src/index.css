@@ -32,11 +32,15 @@
   }
 
   .matchmemd-checkbox {
-    @apply h-4 w-4 text-pacific-500 focus:ring-pacific-500 border-gray-300 rounded;
+    @apply h-4 w-4 text-pacific-500 focus:ring-pacific-500 border-gray-300 rounded cursor-pointer;
+  }
+
+  .matchmemd-radio {
+    @apply focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300 cursor-pointer;
   }
 
   .matchmemd-input {
-    @apply appearance-none block border text-gray-700 bg-gray-50 sm:bg-white rounded-md shadow-sm focus:border-pacific-500 border-gray-300 focus:ring-pacific-500 placeholder-gray-400 focus:outline-none px-3 py-2;
+    @apply appearance-none block border text-gray-700 bg-white rounded-md shadow-sm focus:border-pacific-500 border-gray-300 focus:ring-pacific-500 placeholder-gray-400 focus:outline-none px-3 py-2;
   }
 
   .matchmemd-input-error {
@@ -49,5 +53,9 @@
 
   .matchmemd-text-error {
     @apply text-salmon-500 text-xs font-medium;
+  }
+
+  .matchmemd-input-label {
+    @apply block font-medium text-gray-700 sm:text-lg sm:font-semibold;
   }
 }

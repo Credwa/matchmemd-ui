@@ -1,8 +1,8 @@
 <template>
   <LayoutDefault>
-    <div class="max-w-5xl">
+    <div class="max-w-7xl h-full">
       <header
-        class="sm:absolute max-w-5xl w-full flex justify-center space-between px-4 pt-6 sm:pt-2"
+        class="sm:absolute max-w-7xl w-full flex justify-center space-between px-4 sm:px-6 pt-6 sm:pt-6"
       >
         <p
           to="/onboarding
@@ -12,26 +12,31 @@
           {{ $t('locale.onboardScreen.firstPage') }}
         </p>
         <router-link class="hidden sm:block" to="/onboarding">
-          <img height="40" width="210" class="mx-auto h-6 w-auto" src="/logo.svg" alt="MatchMeMD"
+          <img height="40" width="210" class="mx-auto h-10 w-auto" src="/logo.svg" alt="MatchMeMD"
         /></router-link>
         <img
           height="40"
           width="210"
-          class="mx-auto h-9 sm:h-10 sm:mb-12 w-auto cursor-pointer sm:invisible"
+          class="mx-auto h-9 w-auto cursor-pointer sm:invisible"
           src="/matchmemd-icon.svg"
           alt="MatchMeMD"
         />
-        <p class="py-2 matchmemd-text-link font-normal sm:text-xs" @click="skipOnboarding">
+        <p
+          class="py-2 matchmemd-text-link font-normal sm:text-lg"
+          @click="onFinishOnboarding(true)"
+        >
           {{ $t('locale.onboardScreen.skip') }}
         </p>
       </header>
       <div class="sm:grid sm:grid-rows-3 sm:grid-cols-12 sm:gap-4 sm:h-full">
         <section
-          class="sm:col-span-4 pt-8 sm:pt-0 sm:px-4 space-y-4 flex flex-col justify-center items-center sm:items-start sm:justify-start sm:bg-gray-200 sm:h-screen"
+          class="sm:col-span-4 pt-8 sm:pt-0 sm:px-6 space-y-4 flex flex-col justify-center items-center sm:items-start sm:justify-start sm:bg-gray-200 sm:h-screen"
         >
-          <div class="sm:mt-24 space-y-4">
-            <h1 class="text-2xl text-center sm:text-left leading-8 font-bold text-gray-700">
-              <p class="text-lg leading-10 font-normal">
+          <div class="sm:mt-56 space-y-4">
+            <h1
+              class="text-2xl sm:text-4xl text-center sm:text-left leading-8 font-bold text-gray-700"
+            >
+              <p class="text-lg sm:text-xl leading-10 font-normal sm:mb-2">
                 {{
                   !isPageTwo
                     ? `${$t('locale.onboardScreen.welcome')} ${userProfile.firstName}!`
@@ -46,8 +51,9 @@
                 }}
               </p>
             </h1>
+
             <p
-              class="text-center sm:text-left sm:text-sm text-gray-600 text-lg leading-6 px-2 sm:px-0"
+              class="text-center sm:text-left sm:text-lg text-gray-600 text-lg leading-6 px-2 sm:px-0"
             >
               {{
                 !isPageTwo
@@ -56,13 +62,15 @@
               }}
             </p>
           </div>
+
           <OnboardingStepper
             :isPageTwo="isPageTwo"
-            class="hidden sm:block pt-8"
             v-on:stepperChanged="onStepperChange"
+            class="hidden sm:block pt-8"
           />
         </section>
-        <main class="sm:col-span-8 sm:row-span-3 mt-1 px-4 sm:mt-20" v-if="!isPageTwo">
+
+        <main class="sm:col-span-8 sm:row-span-3 mt-1 px-4 sm:mt-56" v-if="!isPageTwo">
           <div class="">
             <div class="w-full align-center flex justify-center py-6">
               <input
@@ -81,15 +89,17 @@
                   <div class="inline-block relative">
                     <img
                       ref="profilePictureRef"
-                      class="h-16 w-16 rounded-full"
+                      class="h-16 w-16 sm:h-24 sm:w-24 rounded-full"
                       :src="previewedPhoto.dataURL"
                     />
-                    <span class="absolute -top-2 right-0 block h-7 w-7 rounded-full">
+                    <span
+                      class="absolute -top-2 sm:-top-3 right-0 block h-7 w-7 sm:h-10 sm:w-10 rounded-full"
+                    >
                       <CameraSVG />
                     </span>
                   </div>
 
-                  <p class="leading-6 text-gray-600 sm:text-gray-500 sm:text-xs">
+                  <p class="leading-6 text-gray-600 sm:text-gray-500 sm:text-base">
                     {{ previewedPhoto?.file?.name || $t('locale.onboardScreen.addPhoto') }}
                   </p>
                 </div>
@@ -99,46 +109,48 @@
                 >
                   <span class="inline-block relative">
                     <span
-                      class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gray-500"
+                      class="inline-flex items-center justify-center h-16 w-16 sm:h-24 sm:w-24 rounded-full bg-gray-500"
                     >
                       <span class="text-xl font-medium leading-none text-pacific-50">{{
                         initials
                       }}</span>
                     </span>
                     <span
-                      class="absolute -top-2 right-0 block h-7 w-7 sm:h-5 sm:w-5 sm:-top-1 rounded-full"
+                      class="absolute -top-2 right-0 block h-7 w-7 sm:h-10 sm:w-10 sm:-top-3 rounded-full"
                     >
                       <CameraSVG />
                     </span>
                   </span>
-                  <p class="leading-6 sm:text-xs text-gray-600 sm:text-gray-500">
+                  <p class="leading-6 sm:text-base text-gray-600 sm:text-gray-500">
                     {{ $t('locale.onboardScreen.addPhoto') }}
                   </p>
                 </div>
               </label>
             </div>
-            <form class="space-y- pt-2 max-w-xs m-auto" @submit="onSubmit">
-              <div class="space-y-4 pt-2">
+            <form class="space-y- pt-2 max-w-md m-auto" @submit.prevent="onSubmit">
+              <div class="space-y-4 sm:space-y-6 pt-2">
                 <div class="space-y-3">
                   <MatchMeMDSelect
                     inputKey="location"
-                    v-on:optionChanged="onLocationChange"
-                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedCountryOption')"
+                    v-on:optionChanged="onCountryChange"
+                    :defaultSelectedOption="
+                      country || $t('locale.onboardScreen.defaultSelectedCountryOption')
+                    "
                     :label="$t('locale.onboardScreen.inputLabels.location')"
                   />
                   <MatchMeMDDatePicker
-                    v-on:dateChanged="onBirthdayChange"
+                    v-on:dateChanged="onDateOfBirthChange"
                     :label="$t('locale.onboardScreen.inputLabels.birthday')"
                     :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedCountryOption')"
                   />
                 </div>
                 <div>
-                  <div role="group" aria-labelledby="label-notifications">
+                  <div role="group" aria-labelledby="label-gender">
                     <div class="">
                       <div>
                         <div
-                          class="block font-normal text-gray-600 sm:text-xs"
-                          id="label-notifications"
+                          class="block font-medium text-gray-700 sm:text-lg sm:font-semibold"
+                          id=""
                         >
                           {{ $t('locale.onboardScreen.inputLabels.gender.title') }}
                         </div>
@@ -151,14 +163,16 @@
                               <input
                                 id="gender_male"
                                 name="gender"
+                                @change="onGenderChange"
                                 v-model="gender"
                                 value="male"
                                 type="radio"
-                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                                class="matchmemd-radio"
                               />
                               <label
                                 for="gender_male"
-                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
+                                :class="[gender === 'male' ? 'sm:font-medium' : 'sm:font-normal']"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
                               >
                                 {{ $t('locale.onboardScreen.inputLabels.gender.male') }}
                               </label>
@@ -167,14 +181,16 @@
                               <input
                                 v-model="gender"
                                 id="gender_female"
+                                @change="onGenderChange"
                                 name="gender"
                                 value="female"
                                 type="radio"
-                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                                class="matchmemd-radio"
                               />
                               <label
                                 for="gender_female"
-                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
+                                :class="[gender === 'female' ? 'sm:font-medium' : 'sm:font-normal']"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
                               >
                                 {{ $t('locale.onboardScreen.inputLabels.gender.female') }}
                               </label>
@@ -186,10 +202,7 @@
                   </div>
                 </div>
                 <div class="py-6">
-                  <button
-                    @click.prevent="nextPage"
-                    class="matchmemd-button sm:text-xs has-tooltip w-full"
-                  >
+                  <button @click.prevent="nextPage" class="matchmemd-button w-full">
                     <div>{{ $t('locale.onboardScreen.nextButton') }}</div>
                   </button>
                 </div>
@@ -198,31 +211,34 @@
           </div>
         </main>
 
-        <main class="sm:col-span-8 sm:row-span-3 mt-16 px-4 sm:mt-20" v-else>
+        <main
+          class="overflow-y-scroll sm:col-span-8 sm:row-span-3 mt-8 px-4 sm:mt-56 bg-gray-100 sm:bg-transparent rounded-t-3xl sm:pb-36"
+          v-else
+        >
           <div class="">
-            <form class="space-y- pt-2 max-w-xs m-auto" @submit="onSubmit">
-              <div class="space-y-4 pt-2">
-                <div class="space-y-3">
-                  <MatchMeMDSelect
-                    inputKey="location"
-                    v-on:optionChanged="onLocationChange"
-                    :defaultSelectedOption="$t('locale.onboardScreen.defaultSelectedCountryOption')"
-                    :label="$t('locale.onboardScreen.inputLabels.location')"
-                  />
-                  <MatchMeMDDatePicker
-                    v-on:dateChanged="onBirthdayChange"
-                    :label="$t('locale.onboardScreen.inputLabels.birthday')"
+            <form class="pt-2 max-w-md m-auto" @submit.prevent="onSubmit">
+              <div class="space-y-6 sm:space-y-8 pt-2">
+                <div>
+                  <label class="matchmemd-input-label pb-1.5" for="school">{{
+                    $t('locale.onboardScreen.inputLabels.school.attend')
+                  }}</label>
+                  <input
+                    name="school"
+                    type="text"
+                    id="school"
+                    :placeholder="$t('locale.onboardScreen.inputLabels.school.schoolName')"
+                    v-model.trim="school"
+                    @change="onSchoolChange"
+                    maxlength="10"
+                    class="matchmemd-input w-full"
                   />
                 </div>
                 <div>
-                  <div role="group" aria-labelledby="label-notifications">
+                  <div role="group" aria-labelledby="label-medical-status">
                     <div class="">
                       <div>
-                        <div
-                          class="block font-normal text-gray-600 sm:text-xs"
-                          id="label-notifications"
-                        >
-                          {{ $t('locale.onboardScreen.inputLabels.gender.title') }}
+                        <div class="matchmemd-input-label" id="">
+                          {{ $t('locale.onboardScreen.inputLabels.educationalStatus.title') }}
                         </div>
                       </div>
 
@@ -231,36 +247,106 @@
                           <div class="mt-2 space-y-4">
                             <div class="flex items-center">
                               <input
-                                id="gender_male"
-                                @change="onGenderChange"
-                                name="gender"
-                                v-model="gender"
-                                value="male"
+                                id="medicalStudent"
+                                @change="onMedicalStatusChange"
+                                name="medicalStatus"
+                                v-model="medicalStatus"
+                                value="Medical student"
                                 type="radio"
-                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                                class="matchmemd-radio"
                               />
                               <label
-                                for="gender_male"
-                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
+                                for="medicalStudent"
+                                :class="[
+                                  medicalStatus === 'Medical student'
+                                    ? 'sm:font-medium'
+                                    : 'sm:font-normal'
+                                ]"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
                               >
-                                {{ $t('locale.onboardScreen.inputLabels.gender.male') }}
+                                {{
+                                  $t(
+                                    'locale.onboardScreen.inputLabels.educationalStatus.medicalStudent'
+                                  )
+                                }}
                               </label>
                             </div>
                             <div class="flex items-center">
                               <input
-                                v-model="gender"
-                                @change="onGenderChange"
-                                id="gender_female"
-                                name="gender"
-                                value="female"
+                                id="medicalGraduate"
+                                @change="onMedicalStatusChange"
+                                value="Medical graduate"
+                                name="medicalStatus"
+                                v-model="medicalStatus"
                                 type="radio"
-                                class="focus:ring-pacific-500 h-4 w-4 text-pacific-500 border-gray-300"
+                                class="matchmemd-radio"
                               />
                               <label
-                                for="gender_female"
-                                class="ml-3 block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-xs"
+                                for="medicalGraduate"
+                                :class="[
+                                  medicalStatus === 'Medical graduate'
+                                    ? 'sm:font-medium'
+                                    : 'sm:font-normal'
+                                ]"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
                               >
-                                {{ $t('locale.onboardScreen.inputLabels.gender.female') }}
+                                {{
+                                  $t(
+                                    'locale.onboardScreen.inputLabels.educationalStatus.medicalGraduate'
+                                  )
+                                }}
+                              </label>
+                            </div>
+                            <div class="flex items-center">
+                              <input
+                                id="nursingStudent"
+                                @change="onMedicalStatusChange"
+                                value="Nursing student"
+                                name="medicalStatus"
+                                v-model="medicalStatus"
+                                type="radio"
+                                class="matchmemd-radio"
+                              />
+                              <label
+                                for="nursingStudent"
+                                :class="[
+                                  medicalStatus === 'Nursing student'
+                                    ? 'sm:font-medium'
+                                    : 'sm:font-normal'
+                                ]"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                              >
+                                {{
+                                  $t(
+                                    'locale.onboardScreen.inputLabels.educationalStatus.nursingStudent'
+                                  )
+                                }}
+                              </label>
+                            </div>
+                            <div class="flex items-center">
+                              <input
+                                id="nursePractitioner"
+                                @change="onMedicalStatusChange"
+                                value="Nurse practitioner"
+                                name="medicalStatus"
+                                v-model="medicalStatus"
+                                type="radio"
+                                class="matchmemd-radio"
+                              />
+                              <label
+                                for="nursePractitioner"
+                                :class="[
+                                  medicalStatus === 'Nurse practitioner'
+                                    ? 'sm:font-medium'
+                                    : 'sm:font-normal'
+                                ]"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                              >
+                                {{
+                                  $t(
+                                    'locale.onboardScreen.inputLabels.educationalStatus.nursePractitioner'
+                                  )
+                                }}
                               </label>
                             </div>
                           </div>
@@ -269,14 +355,695 @@
                     </div>
                   </div>
                 </div>
+
+                <div>
+                  <div role="group" aria-labelledby="label-clinical-interest">
+                    <div class="">
+                      <div>
+                        <div class="matchmemd-input-label" id="">
+                          {{
+                            $t('locale.onboardScreen.inputLabels.hasClinicalInterest.interested')
+                          }}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="max-w-lg">
+                          <div class="mt-2 space-y-4">
+                            <div class="flex items-center">
+                              <input
+                                id="interestYes"
+                                @change="onHasClinicalInterestChange"
+                                name="hasClinicalInterest"
+                                v-model="hasClinicalInterest"
+                                :value="true"
+                                type="radio"
+                                class="matchmemd-radio"
+                              />
+                              <label
+                                for="interestYes"
+                                :class="[
+                                  hasClinicalInterest === 'yes'
+                                    ? 'sm:font-medium'
+                                    : 'sm:font-normal'
+                                ]"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                              >
+                                {{ $t('locale.onboardScreen.inputLabels.hasClinicalInterest.yes') }}
+                              </label>
+                            </div>
+                            <div class="flex items-center">
+                              <input
+                                id="interestNo"
+                                @change="onHasClinicalInterestChange"
+                                :value="false"
+                                name="hasClinicalInterest"
+                                v-model="hasClinicalInterest"
+                                type="radio"
+                                class="matchmemd-radio"
+                              />
+                              <label
+                                for="interestNo"
+                                :class="[
+                                  hasClinicalInterest === 'no' ? 'sm:font-medium' : 'sm:font-normal'
+                                ]"
+                                class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                              >
+                                {{ $t('locale.onboardScreen.inputLabels.hasClinicalInterest.no') }}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <transition
+                  enter-active-class="transition ease-in duration-200"
+                  enter-from-class="opacity-0"
+                  enter-to-class="opacity-100"
+                  leave-active-class="transition ease-in duration-250"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0"
+                >
+                  <div v-show="hasClinicalInterest" class="space-y-6 sm:space-y-8">
+                    <div>
+                      <div role="group" aria-labelledby="label-clinicals">
+                        <div class="">
+                          <div>
+                            <div class="matchmemd-input-label" id="">
+                              {{ $t('locale.onboardScreen.inputLabels.clinical.title') }}
+                            </div>
+                          </div>
+                          <div>
+                            <div class="max-w-lg">
+                              <div class="mt-2 space-y-4">
+                                <div class="flex items-center">
+                                  <input
+                                    id="core-rotation"
+                                    @change="onClinicalChange"
+                                    name="clinical"
+                                    v-model="clinical"
+                                    value="core"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="core-rotation"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.clinical.core') }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="elective-rotation"
+                                    @change="onClinicalChange"
+                                    name="clinical"
+                                    v-model="clinical"
+                                    value="elective"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="elective-rotation"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.clinical.elective') }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="observership"
+                                    @change="onClinicalChange"
+                                    name="clinical"
+                                    v-model="clinical"
+                                    value="observership"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="observership"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.clinical.observership')
+                                    }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div role="group" aria-labelledby="label-start-date">
+                        <div class="">
+                          <div>
+                            <div class="matchmemd-input-label" id="">
+                              {{ $t('locale.onboardScreen.inputLabels.startDate.title') }}
+                            </div>
+                          </div>
+                          <div>
+                            <div class="max-w-lg">
+                              <div class="mt-2 space-y-4">
+                                <div class="flex items-center">
+                                  <input
+                                    id="start-early"
+                                    @change="onStartDateChange"
+                                    name="startDate"
+                                    v-model="startDate"
+                                    value="early"
+                                    type="radio"
+                                    class="matchmemd-radio"
+                                  />
+                                  <label
+                                    for="start-early"
+                                    :class="[
+                                      startDate === 'early' ? 'sm:font-medium' : 'sm:font-normal'
+                                    ]"
+                                    class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.startDate.early') }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="start-medium"
+                                    @change="onStartDateChange"
+                                    name="startDate"
+                                    v-model="startDate"
+                                    value="medium"
+                                    type="radio"
+                                    class="matchmemd-radio"
+                                  />
+                                  <label
+                                    for="start-medium"
+                                    :class="[
+                                      startDate === 'medium' ? 'sm:font-medium' : 'sm:font-normal'
+                                    ]"
+                                    class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.startDate.medium') }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="start-late"
+                                    @change="onStartDateChange"
+                                    name="startDate"
+                                    v-model="startDate"
+                                    value="late"
+                                    type="radio"
+                                    class="matchmemd-radio"
+                                  />
+                                  <label
+                                    for="start-late"
+                                    :class="[
+                                      startDate === 'late' ? 'sm:font-medium' : 'sm:font-normal'
+                                    ]"
+                                    class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.startDate.late') }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="start-veryLate"
+                                    @change="onStartDateChange"
+                                    name="startDate"
+                                    v-model="startDate"
+                                    value="veryLate"
+                                    type="radio"
+                                    class="matchmemd-radio"
+                                  />
+                                  <label
+                                    for="start-veryLate"
+                                    :class="[
+                                      startDate === 'veryLate' ? 'sm:font-medium' : 'sm:font-normal'
+                                    ]"
+                                    class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.startDate.veryLate') }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div role="group" aria-labelledby="specialties">
+                        <div class="">
+                          <div>
+                            <div class="matchmemd-input-label" id="">
+                              {{ $t('locale.onboardScreen.inputLabels.specialties.title') }}
+                            </div>
+                          </div>
+                          <div>
+                            <div class="max-w-lg">
+                              <div class="mt-2 space-y-2">
+                                <div class="flex flex-row space-x-1.5">
+                                  <div
+                                    @click="onSpecialtiesAction('add')"
+                                    class="cursor-pointer hover:text-pacific-700 text-pacific-600"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.selectAll')
+                                    }}
+                                  </div>
+                                  <p class="text-pacific-600">|</p>
+                                  <div
+                                    @click="onSpecialtiesAction('remove')"
+                                    class="cursor-pointer hover:text-pacific-700 text-pacific-600"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.removeAll')
+                                    }}
+                                  </div>
+                                </div>
+
+                                <div class="flex items-center">
+                                  <input
+                                    id="anesthesiology"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="anesthesiology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="anesthesiology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.anesthesiology'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="cardiology"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="cardiology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="cardiology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.cardiology')
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="dermatology"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="dermatology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="dermatology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.dermatology')
+                                    }}
+                                  </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                  <input
+                                    id="emergencyMedicine"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="emergencyMedicine"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="emergencyMedicine"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.emergencyMedicine'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="endocrinology"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="endocrinology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="endocrinology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.endocrinology'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="familyMedicine"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="familyMedicine"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="familyMedicine"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.familyMedicine'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="gastroenterology"
+                                    @change="onSpecialtiesChange"
+                                    name="specialties"
+                                    v-model="specialties"
+                                    value="gastroenterology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="gastroenterology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.gastroenterology'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="geriatricMedicine"
+                                    @change="onSpecialtiesChange"
+                                    name="geriatricMedicine"
+                                    v-model="specialties"
+                                    value="geriatricMedicine"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="geriatricMedicine"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.geriatricMedicine'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="hematologyOncology"
+                                    @change="onSpecialtiesChange"
+                                    name="hematologyOncology"
+                                    v-model="specialties"
+                                    value="hematologyOncology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="hematologyOncology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.hematologyOncology'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="infectiousDisease"
+                                    @change="onSpecialtiesChange"
+                                    name="infectiousDisease"
+                                    v-model="specialties"
+                                    value="infectiousDisease"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="infectiousDisease"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.infectiousDisease'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="internalMedicine"
+                                    @change="onSpecialtiesChange"
+                                    name="internalMedicine"
+                                    v-model="specialties"
+                                    value="internalMedicine"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="internalMedicine"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.internalMedicine'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="nephrology"
+                                    @change="onSpecialtiesChange"
+                                    name="nephrology"
+                                    v-model="specialties"
+                                    value="nephrology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="nephrology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.nephrology')
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="neurology"
+                                    @change="onSpecialtiesChange"
+                                    name="neurology"
+                                    v-model="specialties"
+                                    value="neurology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="neurology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.neurology')
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="obstetricsGynecology"
+                                    @change="onSpecialtiesChange"
+                                    name="obstetricsGynecology"
+                                    v-model="specialties"
+                                    value="obstetricsGynecology"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="obstetricsGynecology"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t(
+                                        'locale.onboardScreen.inputLabels.specialties.obstetricsGynecology'
+                                      )
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="pediatrics"
+                                    @change="onSpecialtiesChange"
+                                    name="pediatrics"
+                                    v-model="specialties"
+                                    value="pediatrics"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="pediatrics"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.pediatrics')
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="psychiatry"
+                                    @change="onSpecialtiesChange"
+                                    name="psychiatry"
+                                    v-model="specialties"
+                                    value="psychiatry"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="psychiatry"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.psychiatry')
+                                    }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="urgentCare"
+                                    @change="onSpecialtiesChange"
+                                    name="urgentCare"
+                                    v-model="specialties"
+                                    value="urgentCare"
+                                    type="checkbox"
+                                    class="matchmemd-checkbox"
+                                  />
+                                  <label
+                                    for="urgentCare"
+                                    class="ml-3 cursor-pointer block text-sm font-medium sm:font-normal leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{
+                                      $t('locale.onboardScreen.inputLabels.specialties.urgentCare')
+                                    }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div role="group" aria-labelledby="visa-required">
+                        <div class="">
+                          <div>
+                            <div class="matchmemd-input-label" id="">
+                              {{ $t('locale.onboardScreen.inputLabels.visa.title') }}
+                            </div>
+                          </div>
+                          <div>
+                            <div class="max-w-lg">
+                              <div class="mt-2 space-y-4">
+                                <div class="flex items-center">
+                                  <input
+                                    id="visa-yes"
+                                    @change="onVisaChange"
+                                    name="visa"
+                                    v-model="visaRequired"
+                                    :value="true"
+                                    type="radio"
+                                    class="matchmemd-radio"
+                                  />
+                                  <label
+                                    for="visa-yes"
+                                    :class="[
+                                      visaRequired === 'yes' ? 'sm:font-medium' : 'sm:font-normal'
+                                    ]"
+                                    class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.visa.yes') }}
+                                  </label>
+                                </div>
+                                <div class="flex items-center">
+                                  <input
+                                    id="visa-no"
+                                    @change="onVisaChange"
+                                    name="visa"
+                                    v-model="visaRequired"
+                                    :value="false"
+                                    type="radio"
+                                    class="matchmemd-radio"
+                                  />
+                                  <label
+                                    for="visa-no"
+                                    :class="[
+                                      visaRequired === 'no' ? 'sm:font-medium' : 'sm:font-normal'
+                                    ]"
+                                    class="ml-3 cursor-pointer block text-sm font-medium leading-5 text-gray-600 sm:text-base"
+                                  >
+                                    {{ $t('locale.onboardScreen.inputLabels.visa.no') }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </transition>
+
                 <div class="py-6 flex flex-row space-x-4">
-                  <button
-                    @click.prevent="back"
-                    class="matchmemd-button-negative sm:text-xs has-tooltip w-full"
-                  >
+                  <button @click.prevent="back" class="matchmemd-button-negative w-full">
                     <div>{{ $t('locale.onboardScreen.backButton') }}</div>
                   </button>
-                  <button class="matchmemd-button sm:text-xs has-tooltip w-full">
+                  <button @click.prevent="onFinishOnboarding" class="matchmemd-button w-full">
                     <div>{{ $t('locale.onboardScreen.finishButton') }}</div>
                   </button>
                 </div>
@@ -293,6 +1060,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import throttle from 'lodash/throttle'
 import CameraSVG from '@/components/CameraSVG.vue'
 import MatchMeMDSelect from '@/components/MatchMeMDSelect.vue'
 import MatchMeMDDatePicker from '@/components/MatchMeMDDatePicker.vue'
@@ -304,25 +1072,57 @@ import {
   ONBOARDING_BACK,
   COUNTRY_SELECTED,
   BIRTHDAY_SELECTED,
-  ONBOARDING_STEPPER_CHANGED
+  ONBOARDING_STEPPER_CHANGED,
+  ONBOARDING_GENDER_CHANGE,
+  ONBOARDING_MEDICAL_STATUS_CHANGE,
+  ONBOARDING_CLINICAL_INTEREST_CHANGED,
+  ONBOARDING_START_DATE_CHANGED,
+  ONBOARDING_VISA_CHANGED,
+  ONBOARDING_CLINICAL_CHANGED,
+  ONBOARDING_SPECIALTIES_CHANGED,
+  ONBOARDING_FINISHED,
+  ONBOARDING_SPECIALTIES_SELECT_ALL,
+  ONBOARDING_SPECIALTIES_REMOVE_ALL
 } from '../services/mixpanel-events'
+import { Action } from '../store'
+import { UserProfile } from '../types'
+import { getUnixTime } from 'date-fns'
 
 export default {
   name: 'Onboard',
   components: { CameraSVG, MatchMeMDSelect, MatchMeMDDatePicker, OnboardingStepper },
   setup() {
     mixpanel.track(ONBOARDING_BEGIN)
+
     const router = useRouter()
-    const store = useStore()
-    const profilePictureCanvasRef = ref()
+    const store = useStore<Partial<UserProfile>>()
+    const userProfile: UserProfile = store.getters.getUserProfile
     const isPageTwo = ref(false)
     const profilePictureRef = ref()
-    const userProfile = store.getters.getUserProfile
+    const school = ref(userProfile?.onboardData?.school)
+    const country = ref(userProfile?.country)
     const previewedPhoto = ref({})
-    const gender = ref()
-    const initials = computed(
+    const clinical = ref<string[]>(userProfile?.onboardData?.clinical || [])
+    const specialties = ref<string[]>(userProfile?.onboardData?.specialties || [])
+    const gender = ref<string | undefined>(userProfile?.gender)
+    const visaRequired = ref<boolean | undefined>(userProfile?.onboardData?.visaRequired)
+    const medicalStatus = ref<string | undefined>(userProfile?.onboardData?.medicalStatus)
+    const hasClinicalInterest = ref<boolean>(userProfile?.onboardData?.hasClinicalInterest || false)
+    const startDate = ref<string | undefined>(userProfile?.onboardData?.startDate)
+    const initials = computed<string>(
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
+
+    function updateUserProfile(payload: Partial<UserProfile>, event?: string, setPeople?: boolean) {
+      store.dispatch(Action.UPDATE_USER_PROFILE, payload).then(() => {
+        if (event) {
+          mixpanel.track(event)
+        }
+        if (setPeople) {
+          mixpanel.people.set(payload)
+        }
+      })
+    }
 
     function previewFiles(event: Event) {
       const reader = new FileReader()
@@ -335,19 +1135,19 @@ export default {
       }
     }
 
-    function skipOnboarding() {
-      mixpanel.track(ONBOARDING_SKIP)
-      router.push('/dashboard')
+    function onCountryChange(country: string) {
+      updateUserProfile({ country: country }, COUNTRY_SELECTED, true)
     }
 
-    function onLocationChange(e) {
-      mixpanel.track(COUNTRY_SELECTED)
-      console.log(e)
-    }
-
-    function onBirthdayChange(e) {
-      console.log(e)
-      mixpanel.track(BIRTHDAY_SELECTED)
+    function onDateOfBirthChange(e: any) {
+      store
+        .dispatch(Action.UPDATE_USER_PROFILE, {
+          dateOfBirth: getUnixTime(new Date(e.value))
+        })
+        .then(() => {
+          mixpanel.track(BIRTHDAY_SELECTED)
+          mixpanel.people.set({ 'Date of birth': new Date(e.value) })
+        })
     }
 
     function nextPage() {
@@ -360,33 +1160,196 @@ export default {
       isPageTwo.value = false
     }
 
+    function onFinishOnboarding(skipped: boolean) {
+      store
+        .dispatch(Action.UPDATE_USER_PROFILE, {
+          registrationComplete: true
+        })
+        .then(() => {
+          if (skipped) {
+            mixpanel.track(ONBOARDING_SKIP)
+          } else {
+            mixpanel.track(ONBOARDING_FINISHED)
+          }
+          router.push('/dashboard')
+        })
+    }
+
     function onGenderChange() {
-      console.log('gender :>> ', gender)
+      updateUserProfile(
+        {
+          gender: gender.value
+        },
+        ONBOARDING_GENDER_CHANGE,
+        true
+      )
+    }
+
+    function onMedicalStatusChange() {
+      updateUserProfile(
+        {
+          onboardData: { medicalStatus: medicalStatus.value }
+        },
+        ONBOARDING_MEDICAL_STATUS_CHANGE
+      )
     }
 
     function onStepperChange(value: boolean) {
-      console.log(value)
       mixpanel.track(ONBOARDING_STEPPER_CHANGED, value)
       isPageTwo.value = value
     }
 
+    function onStartDateChange() {
+      updateUserProfile(
+        {
+          onboardData: { startDate: startDate.value }
+        },
+        ONBOARDING_START_DATE_CHANGED
+      )
+    }
+
+    function onHasClinicalInterestChange() {
+      updateUserProfile(
+        {
+          onboardData: { hasClinicalInterest: hasClinicalInterest.value }
+        },
+        ONBOARDING_CLINICAL_INTEREST_CHANGED
+      )
+    }
+
+    const onClinicalChange = throttle(
+      () => {
+        updateUserProfile(
+          {
+            onboardData: { clinical: clinical.value }
+          },
+          ONBOARDING_CLINICAL_CHANGED
+        )
+      },
+      3000,
+      { leading: false }
+    )
+
+    function onVisaChange() {
+      updateUserProfile(
+        {
+          onboardData: { visaRequired: visaRequired.value }
+        },
+        ONBOARDING_VISA_CHANGED
+      )
+    }
+
+    const onSchoolChange = throttle(
+      () => {
+        updateUserProfile({ onboardData: { school: school.value } })
+      },
+      3000,
+      { leading: false }
+    )
+
+    function onSpecialtiesAction(action: string) {
+      if (action === 'add') {
+        mixpanel.track(ONBOARDING_SPECIALTIES_SELECT_ALL)
+        specialties.value = [
+          'anesthesiology',
+          'cardiology',
+          'dermatology',
+          'emergencyMedicine',
+          'endocrinology',
+          'familyMedicine',
+          'gastroenterology',
+          'geriatricMedicine',
+          'hematologyOncology',
+          'infectiousDisease',
+          'internalMedicine',
+          'nephrology',
+          'neurology',
+          'obstetricsGynecology',
+          'pediatrics',
+          'psychiatry',
+          'urgentCare'
+        ]
+      } else if (action === 'remove') {
+        mixpanel.track(ONBOARDING_SPECIALTIES_REMOVE_ALL)
+        specialties.value = []
+      }
+      onSpecialtiesChange()
+    }
+
+    const onSpecialtiesChange = throttle(
+      () => {
+        updateUserProfile(
+          { onboardData: { specialties: specialties.value } },
+          ONBOARDING_SPECIALTIES_CHANGED
+        )
+      },
+      3000,
+      { leading: false }
+    )
+
     return {
-      skipOnboarding,
       initials,
       previewFiles,
       previewedPhoto,
       userProfile,
-      profilePictureCanvasRef,
       profilePictureRef,
-      onLocationChange,
-      onBirthdayChange,
+      onCountryChange,
+      onDateOfBirthChange,
       nextPage,
       gender,
       isPageTwo,
       back,
       onGenderChange,
-      onStepperChange
+      onStepperChange,
+      school,
+      onSchoolChange,
+      onMedicalStatusChange,
+      medicalStatus,
+      hasClinicalInterest,
+      onHasClinicalInterestChange,
+      startDate,
+      onStartDateChange,
+      clinical,
+      onClinicalChange,
+      visaRequired,
+      onVisaChange,
+      specialties,
+      onSpecialtiesChange,
+      onSpecialtiesAction,
+      onFinishOnboarding,
+      country
     }
   }
 }
 </script>
+
+<style scoped>
+/* START CUSTOM SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 0.15rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px grey;
+  border-radius: 0px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #108c9f;
+  border-radius: 1rem;
+  height: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #15555f;
+}
+/* END CUSTOM SCROLLBAR */
+</style>
+
+function ONBOARDING_FINISHED(ONBOARDING_FINISHED: any) { throw new Error('Function not
+implemented.') } function ONBOARDING_FINISHED(ONBOARDING_FINISHED: any) { throw new Error('Function
+not implemented.') }
