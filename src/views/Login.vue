@@ -98,8 +98,8 @@
                   type="submit"
                   class="matchmemd-button has-tooltip w-full"
                 >
-                  <img v-if="loading" class="h-full w-5" src="/Loader.svg" />
-                  <div v-else>{{ $t('locale.loginScreen.cta') }}</div>
+                  <img v-show="loading" class="h-full w-5" src="/Loader.svg" />
+                  <div v-show="!loading">{{ $t('locale.loginScreen.cta') }}</div>
                   <span v-if="!loginEnabled" class="tooltip p-2 mt-8">{{
                     $t('locale.loginScreen.tooltip')
                   }}</span>
@@ -112,7 +112,7 @@
                     <div class="w-full border-t border-gray-300"></div>
                   </div>
                   <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-pacific-50 sm:bg-white text-gray-500">
+                    <span class="px-2 bg-gray-100 sm:bg-white text-gray-500">
                       {{ $t('locale.loginScreen.continue') }}
                     </span>
                   </div>

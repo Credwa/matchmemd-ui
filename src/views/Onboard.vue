@@ -1087,13 +1087,15 @@ import {
 import { Action } from '../store'
 import { UserProfile } from '../types'
 import { getUnixTime } from 'date-fns'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'Onboard',
   components: { CameraSVG, MatchMeMDSelect, MatchMeMDDatePicker, OnboardingStepper },
   setup() {
     mixpanel.track(ONBOARDING_BEGIN)
-
+    const { t } = useI18n()
+    document.title = t('locale.onboardScreen.meta.title')
     const router = useRouter()
     const store = useStore<Partial<UserProfile>>()
     const userProfile: UserProfile = store.getters.getUserProfile

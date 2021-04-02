@@ -225,9 +225,12 @@ import { UserProfile } from '../types'
 import { Action } from '../store'
 import { useRouter } from 'vue-router'
 import { DASHBOARD_REVIEW_PROFILE, LOGOUT } from '../services/mixpanel-events'
+import { useI18n } from 'vue-i18n'
 
 export default {
   setup() {
+    const { t } = useI18n()
+    document.title = 'Dashboard'
     const router = useRouter()
     const store = useStore<UserProfile>()
     const showMenu = ref(false)

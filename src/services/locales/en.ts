@@ -100,6 +100,9 @@ const en_locale = {
       },
 
       onboardScreen: {
+        meta: {
+          title: 'Onboarding'
+        },
         skip: 'Skip',
         completeProfile: 'Tell us about yourself',
         completeProfileDetailsOne:
