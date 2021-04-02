@@ -13,7 +13,8 @@ export default defineConfig({
         short_name: 'MatchMeMD',
         start_url: '/',
         display: 'standalone',
-        background_color: '#fff',
+        background_color: '#f1f9fa',
+        theme_color: '#14acbd',
         description: 'MatchMeMD web application',
         icons: [
           {
@@ -44,6 +45,11 @@ export default defineConfig({
           {
             src: '/matchmemd-icon192.png',
             sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: '/matchmemd-vert-logo512.png',
+            sizes: '512x512',
             type: 'image/png'
           }
         ]
