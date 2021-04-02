@@ -45,7 +45,8 @@ export default defineConfig({
           {
             src: '/matchmemd-icon192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
             src: '/matchmemd-vert-logo512.png',
