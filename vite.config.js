@@ -11,38 +11,38 @@ export default defineConfig({
       manifest: {
         name: 'MatchMeMD',
         short_name: 'MatchMeMD',
-        start_url: '.',
+        start_url: '/',
         display: 'standalone',
         background_color: '#fff',
         description: 'MatchMeMD web application',
         icons: [
           {
-            src: 'assets/matchmemd-icon48.png',
+            src: '/matchmemd-icon48.png',
             sizes: '48x48',
             type: 'image/png'
           },
           {
-            src: 'assets/matchmemd-icon72.png',
+            src: '/matchmemd-icon72.png',
             sizes: '72x72',
             type: 'image/png'
           },
           {
-            src: 'assets/matchmemd-icon96.png',
+            src: '/matchmemd-icon96.png',
             sizes: '96x96',
             type: 'image/png'
           },
           {
-            src: 'assets/matchmemd-icon144.png',
+            src: '/matchmemd-icon144.png',
             sizes: '144x144',
             type: 'image/png'
           },
           {
-            src: 'assets/matchmemd-icon168.png',
+            src: '/matchmemd-icon168.png',
             sizes: '168x168',
             type: 'image/png'
           },
           {
-            src: 'assets/matchmemd-icon192.png',
+            src: '/matchmemd-icon192.png',
             sizes: '192x192',
             type: 'image/png'
           }
