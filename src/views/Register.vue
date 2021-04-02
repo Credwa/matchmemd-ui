@@ -52,7 +52,7 @@
           <form class="space-y-6" @submit="onSubmit">
             <div class="pb-1 flex flex-col">
               <div class="pb-1 flex flex-row space-x-3">
-                <div class="relative">
+                <div class="relative w-full">
                   <label v-show="false" for="firstName">{{
                     $t('locale.registerScreen.placeholderFirstName')
                   }}</label>
@@ -72,7 +72,7 @@
                   <Tick :shown="firstNameMeta.valid" />
                 </div>
 
-                <div class="relative">
+                <div class="relative w-full">
                   <label v-show="false" for="lastName">{{
                     $t('locale.registerScreen.placeholderLastName')
                   }}</label>
