@@ -6,8 +6,18 @@
         <component :is="Component" />
       </transition>
     </router-view>
+    <ReloadPrompt />
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import ReloadPrompt from '@/components/ReloadPrompt.vue'
+
+export default {
+  components: { ReloadPrompt }
+}
+</script>
 
 <style scoped>
 .fade-enter-active,
