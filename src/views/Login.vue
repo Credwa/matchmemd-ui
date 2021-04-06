@@ -76,7 +76,7 @@
                   v-model="rememberMe"
                   class="matchmemd-checkbox"
                 />
-                <label for="remember_me" class="ml-2 block text-sm text-gray-700">
+                <label for="remember_me" class="cursor-pointer ml-2 block text-sm text-gray-700">
                   {{ $t('locale.loginScreen.rememberMe') }}
                 </label>
               </div>
