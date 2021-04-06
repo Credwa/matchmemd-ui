@@ -229,7 +229,7 @@
                     :placeholder="$t('locale.onboardScreen.inputLabels.school.schoolName')"
                     v-model.trim="school"
                     @change="onSchoolChange"
-                    maxlength="10"
+                    maxlength="40"
                     class="matchmemd-input w-full"
                   />
                 </div>
