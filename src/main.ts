@@ -21,12 +21,7 @@ const i18n = createI18n({
   messages: locales
 })
 
-if (import.meta.env.mode === 'production') {
-  mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN_PROD as string)
-} else {
-  mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN_STAGING as string)
-}
-
+mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN as string)
 mixpanel.track<null>(APP_LOADED)
 
 function bootstrapApp(app: VueApp<Element>) {
