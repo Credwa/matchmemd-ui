@@ -33,17 +33,24 @@
                   id="user-menu"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  @blur="toggleMenu('false')"
+                  @blur="toggleMenu(false)"
                 >
                   <span class="sr-only">Open user menu</span>
                   <span class="inline-block relative">
                     <span
+                      v-if="!profilePhotoRef.file"
                       class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-500"
                     >
                       <span class="text-base font-medium leading-none text-pacific-50">{{
                         initials
                       }}</span>
                     </span>
+                    <img
+                      v-else
+                      ref="profilePictureRef"
+                      class="h-8 w-8 rounded-full"
+                      :src="profilePhotoRef.dataURL"
+                    />
                   </span>
                 </button>
               </div>
@@ -167,12 +174,19 @@
               <div class="flex-shrink-0">
                 <span class="inline-block relative">
                   <span
+                    v-if="!profilePhotoRef.file"
                     class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-gray-500"
                   >
                     <span class="text-base font-medium leading-none text-pacific-50">{{
                       initials
                     }}</span>
                   </span>
+                  <img
+                    v-else
+                    ref="profilePictureRef"
+                    class="h-10 w-10 rounded-full"
+                    :src="profilePhotoRef.dataURL"
+                  />
                 </span>
               </div>
               <div class="ml-3">
@@ -195,16 +209,16 @@
       </transition>
     </nav>
 
-    <div class="w-full pt-24 text-center px-2">
+    <div class="w-full pt-24 text-center px-2 sm:mt-20">
       <div class="">
         <h1 class="text-2xl sm:text-4xl sm:leading-8 font-bold text-gray-600">Welcome Craig!</h1>
 
-        <p class="text-lg sm:text-2xl sm:leading-8 text-gray-600 pt-6">
+        <p class="text-lg sm:text-2xl sm:leading-8 text-gray-600 pt-6 sm:mt-4">
           We’re still wrapping things up for our website. We’ll send an email when things are ready
           for you :)
         </p>
 
-        <p class="text-lg sm:text-2xl sm:leading-8 text-gray-600 pt-12">
+        <p class="text-lg sm:text-2xl sm:leading-8 text-gray-600 pt-12 sm:pt-6">
           While you’re waiting you can check your inbox to
           <span class="text-pacific-500">verify your email</span> or
           <span
@@ -232,12 +246,21 @@ export default {
     const { t } = useI18n()
     document.title = 'Dashboard'
     const router = useRouter()
+    const profilePhotoRef = ref({})
     const store = useStore<UserProfile>()
     const showMenu = ref(false)
     const userProfile: UserProfile = store.getters.getUserProfile
     const initials = computed<string>(
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
+
+    // load profile picture
+    store.dispatch(Action.DOWNLOAD_PROFILE_PICTURE).then((data: string | null) => {
+      if (typeof data == 'string') {
+        profilePhotoRef.value = { dataURL: data, file: { type: 'image' } }
+      }
+    })
+
     function logout() {
       store.dispatch(Action.LOGOUT).then(() => {
         mixpanel.track(LOGOUT)
@@ -259,7 +282,7 @@ export default {
         })
     }
 
-    return { logout, showMenu, toggleMenu, userProfile, onReviewProfile, initials }
+    return { logout, showMenu, toggleMenu, userProfile, onReviewProfile, initials, profilePhotoRef }
   }
 }
 </script>

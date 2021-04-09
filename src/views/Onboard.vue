@@ -1082,12 +1082,14 @@ import {
   ONBOARDING_SPECIALTIES_CHANGED,
   ONBOARDING_FINISHED,
   ONBOARDING_SPECIALTIES_SELECT_ALL,
-  ONBOARDING_SPECIALTIES_REMOVE_ALL
+  ONBOARDING_SPECIALTIES_REMOVE_ALL,
+  ONBOARDING_UPLOADED_PROFILE_PICTURE
 } from '../services/mixpanel-events'
 import { Action } from '../store'
 import { UserProfile } from '../types'
 import { getUnixTime } from 'date-fns'
 import { useI18n } from 'vue-i18n'
+import ImageTools from '../services/ImageTools'
 
 export default {
   name: 'Onboard',
@@ -1115,6 +1117,13 @@ export default {
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
 
+    // load profile picture
+    store.dispatch(Action.DOWNLOAD_PROFILE_PICTURE).then((data: string | null) => {
+      if (typeof data === 'string') {
+        previewedPhoto.value = { dataURL: data, file: { type: 'image' } }
+      }
+    })
+
     function updateUserProfile(payload: Partial<UserProfile>, event?: string, setPeople?: boolean) {
       store.dispatch(Action.UPDATE_USER_PROFILE, payload).then(() => {
         if (event) {
@@ -1130,7 +1139,21 @@ export default {
       const reader = new FileReader()
       const uploadedFile = (<EventTarget & { files: FileList }>event.target).files[0]
       reader.onload = () => {
-        previewedPhoto.value = { dataURL: reader.result, file: uploadedFile }
+        ImageTools.resize(
+          uploadedFile,
+          {
+            width: 96,
+            height: 96
+          },
+          function (blob: string | Partial<File>, didItResize: boolean) {
+            previewedPhoto.value = didItResize
+              ? { dataURL: window.URL.createObjectURL(blob), file: uploadedFile }
+              : { dataURL: reader.result, file: uploadedFile }
+            store.dispatch(Action.UPLOAD_PROFILE_PICTURE, blob || uploadedFile).then(() => {
+              mixpanel.track(ONBOARDING_UPLOADED_PROFILE_PICTURE)
+            })
+          }
+        )
       }
       if (uploadedFile) {
         reader.readAsDataURL(uploadedFile)

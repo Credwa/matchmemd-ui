@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage'
 import { UserProfile } from '../types'
 
 const firebaseConfig: Record<string, unknown> = {
@@ -18,11 +19,15 @@ firebase.initializeApp(firebaseConfig)
 // utils
 const db = firebase.firestore()
 const auth = firebase.auth()
+const storage = firebase.storage()
 
 // collection references
 const usersCollection = db.collection(
   'users'
 ) as firebase.firestore.CollectionReference<UserProfile>
 
+// storage references
+const storageRef = storage.ref()
+
 // export utils/refs
-export { db, auth, usersCollection, firebase as types }
+export { db, auth, storage, usersCollection, storageRef, firebase as types }

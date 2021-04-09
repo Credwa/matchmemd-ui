@@ -11,7 +11,9 @@ export enum Action {
   FETCH_USER_PROFILE = 'FETCH_USER_PROFILE',
   REGISTER = 'REGISTER',
   LOGOUT = 'LOGOUT',
-  UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE'
+  UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE',
+  UPLOAD_PROFILE_PICTURE = 'UPLOAD_PROFILE_PICTURE',
+  DOWNLOAD_PROFILE_PICTURE = 'DOWNLOAD_PROFILE_PICTURE'
 }
 
 type AugmentedActionContext = {
@@ -25,11 +27,13 @@ export interface Actions {
   [Action.LOGIN]({ dispatch }: AugmentedActionContext, form: LoginForm): void
   [Action.FETCH_USER_PROFILE]({ commit }: AugmentedActionContext, user: firebase.types.User): void
   [Action.UPDATE_USER_PROFILE](
-    { commit }: AugmentedActionContext,
+    { commit, state }: AugmentedActionContext,
     payload: Partial<UserProfile>
   ): void
   [Action.REGISTER]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
-  [Action.LOGOUT]({ dispatch }: AugmentedActionContext): void
+  [Action.LOGOUT]({ commit }: AugmentedActionContext): void
+  [Action.UPLOAD_PROFILE_PICTURE]({ dispatch }: AugmentedActionContext, blob: Blob): void
+  [Action.DOWNLOAD_PROFILE_PICTURE]({ state }: AugmentedActionContext): void
 }
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -105,6 +109,22 @@ export const actions: ActionTree<State, State> & Actions = {
         .doc(firebase.auth.currentUser?.uid)
         .set(payload, { merge: true })
       commit(Mutation.SET_USER_PROFILE, { ...state.userProfile, ...payload })
+    }
+  },
+
+  async [Action.UPLOAD_PROFILE_PICTURE]({ dispatch }, blob: Blob) {
+    await firebase.storageRef.child(`ProfilePictures/${firebase.auth.currentUser?.uid}`).put(blob)
+    dispatch(Action.UPDATE_USER_PROFILE, { imageUploaded: true })
+  },
+
+  async [Action.DOWNLOAD_PROFILE_PICTURE]({ state }) {
+    if (state.userProfile.imageUploaded) {
+      const userProfilePictureRef = firebase.storage.ref(
+        `ProfilePictures/${firebase.auth.currentUser?.uid}`
+      )
+      return await userProfilePictureRef.getDownloadURL()
+    } else {
+      return null
     }
   }
 }
