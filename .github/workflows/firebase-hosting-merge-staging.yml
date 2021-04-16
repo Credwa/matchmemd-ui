@@ -23,6 +23,7 @@ jobs:
           echo VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID_STAGING }} >> .env &&
           echo VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET_STAGING }} >> .env &&
           echo VITE_FUNCTIONS_URL=https://us-east1-matchmemd-staging-308907.cloudfunctions.net >> .env &&
+          echo VITE_HOST=https://staging.matchmemd.com >> .env &&
           cat .env
 
       - name: Create staging env file for vite error workaround
