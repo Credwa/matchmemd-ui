@@ -118,8 +118,9 @@ const en_locale = {
         tooltip: 'Complete form to reset your password',
         resetCodeExpired: 'Reset code may have expired',
         resendPasswordReset: 'resend password reset',
-        login: 'login',
-        successMessage: 'Password successfully reset. Redirecting you to login...'
+        login: 'Login',
+        successMessage: 'Password successfully reset. Redirecting you to login...',
+        downloadPdf: 'Download your free pdf'
       },
 
       onboardScreen: {

@@ -30,7 +30,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EmailActions',
     component: () => import(/* webpackChunkName: "email-actions" */ '@/views/EmailActions.vue'),
     beforeEnter: (to, from, next) => {
-      console.log('to :>> ', to.query)
       if (to.query.mode && to.query.oobCode && to.query.continueUrl) {
         next()
       } else {

@@ -265,6 +265,8 @@ import { RegisterKeys, RegisterValues } from '../types/'
 import { useStore } from 'vuex'
 import { Action } from '../store/actions'
 import { REGISTRATION_FAILED } from '../services/mixpanel-events'
+import { verify } from 'node:crypto'
+import { verifyEmailRequest } from '../services/api'
 
 export default {
   name: 'Register',
@@ -365,6 +367,7 @@ export default {
         .dispatch(Action.REGISTER, values)
         .then(() => {
           loading.value = false
+          verifyEmailRequest(values.email, values.firstName)
         })
         .catch((e) => {
           let failedResults: Record<string, unknown> = { ...values, reason: e.code }

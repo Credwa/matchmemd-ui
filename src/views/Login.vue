@@ -232,6 +232,7 @@ export default {
 
     const onSubmit = handleSubmit((values: Record<LoginKeys, LoginValues>) => {
       loading.value = true
+      loginError.value = false
       store
         .dispatch(Action.LOGIN, values)
         .then(() => {

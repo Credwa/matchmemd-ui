@@ -10,22 +10,52 @@
             src="/logo.svg"
             alt="MatchMeMD"
         /></router-link>
-        <h1
-          v-if="!passwordResetSuccess"
-          class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
-        >
-          {{ $t('locale.emailActionsScreen.titles.reset') }}
-        </h1>
-        <h1
-          v-if="passwordResetSuccess"
-          class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
-        >
-          {{ $t('locale.emailActionsScreen.resetSuccessTitle') }}
-        </h1>
+
+        <div v-if="mode === 'verifyEmail'">
+          <h1
+            class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
+          >
+            {{ $t('locale.emailActionsScreen.titles.verify') }}
+          </h1>
+        </div>
+
+        <div v-if="mode === 'resetPassword'">
+          <h1
+            v-if="!passwordResetSuccess"
+            class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
+          >
+            {{ $t('locale.emailActionsScreen.titles.reset') }}
+          </h1>
+          <h1
+            v-if="passwordResetSuccess"
+            class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 sm:font-extrabold text-gray-900"
+          >
+            {{ $t('locale.emailActionsScreen.resetSuccessTitle') }}
+          </h1>
+        </div>
       </header>
 
       <main class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="sm:bg-white py-8 px-2 sm:shadow sm:rounded-lg sm:px-10">
+        <div
+          class="sm:bg-white py-8 px-2 sm:shadow sm:rounded-lg sm:px-10 text-center flex-col item-center content-center justify-center space-y-12"
+          v-if="mode === 'verifyEmail' && pdfDownloadUrl"
+        >
+          <a
+            class="text-pacific-500 cursor-pointer hover:text-pacific-600 py-5 text-lg sm:text-xl"
+            :href="pdfDownloadUrl"
+            target="_blank"
+            >{{ $t('locale.emailActionsScreen.downloadPdf') }}</a
+          >
+
+          <router-link to="/login" class="matchmemd-button">
+            <div>{{ $t('locale.emailActionsScreen.login') }}</div>
+          </router-link>
+        </div>
+
+        <div
+          v-if="mode === 'resetPassword'"
+          class="sm:bg-white py-8 px-2 sm:shadow sm:rounded-lg sm:px-10"
+        >
           <div
             class="py-1 px-2 mb-8 rounded m-auto w-full bg-salmon-600 text-pacific-50"
             v-if="resetError"
@@ -144,7 +174,8 @@ import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { LoginKeys, LoginValues } from '../types'
 import { RESET_PASSWORD_REQUEST } from '../services/mixpanel-events'
-import { auth } from '../services/firebase'
+import { auth, storageRef } from '../services/firebase'
+import axios from 'axios'
 
 export default {
   name: 'EmailActions',
@@ -156,6 +187,14 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const { mode, oobCode, contineuUrl } = route.query
+    const pdfDownloadUrl = ref('')
+    storageRef
+      .child('Files/matchmemd_marketing.pdf')
+      .getDownloadURL()
+      .then((url) => {
+        console.log(url)
+        pdfDownloadUrl.value = url
+      })
 
     if (mode === 'resetPassword') {
       document.title = t('locale.emailActionsScreen.meta.titleReset')
@@ -234,7 +273,6 @@ export default {
           .catch((error) => {
             loading.value = false
             resetError.value = true
-            console.log(error)
             passwordResetSuccess.value = false
           })
       }
@@ -243,6 +281,24 @@ export default {
         mixpanel.track(RESET_PASSWORD_REQUEST)
       })
     })
+
+    function downloadPdf() {
+      axios(pdfDownloadUrl.value, {
+        method: 'GET',
+        responseType: 'blob'
+      })
+        .then((response) => {
+          //Create a Blob from the PDF Stream
+          const file = new Blob([response.data], { type: 'application/pdf' })
+          //Build a URL from the file
+          const fileURL = URL.createObjectURL(file)
+          //Open the URL on new Window
+          window.open(fileURL)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
 
     return {
       onSubmit,
@@ -258,7 +314,9 @@ export default {
       loading,
       resetError,
       passwordResetSuccess,
-      mode
+      mode,
+      pdfDownloadUrl,
+      downloadPdf
     }
   }
 }

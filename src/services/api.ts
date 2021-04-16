@@ -13,3 +13,17 @@ export async function passwordResetRequest(
     }
   )
 }
+
+export async function verifyEmailRequest(
+  email: string,
+  firstName: string
+): Promise<AxiosResponse<{ email: string; host: string; first_name: string }>> {
+  return await axios.post<{ email: string; host: string; first_name: string }>(
+    import.meta.env.VITE_FUNCTIONS_URL + '/verify-email-request',
+    {
+      email: email,
+      host: import.meta.env.VITE_HOST,
+      first_name: firstName
+    }
+  )
+}

@@ -224,7 +224,7 @@
           <span
             @click="onReviewProfile"
             class="text-pacific-500 cursor-pointer hover:text-pacific-600"
-            >review your profile</span
+            >click here review your profile</span
           >.
         </p>
       </div>

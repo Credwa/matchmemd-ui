@@ -143,9 +143,7 @@ export default {
       resetError.value = false
       const resetPassword = async () => {
         try {
-          console.log(values.email)
           const res = await passwordResetRequest(values.email)
-          console.log(res)
           loading.value = false
           passwordResetSuccess.value = true
           resetError.value = false
