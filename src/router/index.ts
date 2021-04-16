@@ -23,7 +23,20 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import(/* webpackChunkName: "policy" */ '@/views/ForgotPassword.vue')
+    component: () => import(/* webpackChunkName: "forgot-password" */ '@/views/ForgotPassword.vue')
+  },
+  {
+    path: '/email-actions',
+    name: 'EmailActions',
+    component: () => import(/* webpackChunkName: "email-actions" */ '@/views/EmailActions.vue'),
+    beforeEnter: (to, from, next) => {
+      console.log('to :>> ', to.query)
+      if (to.query.mode && to.query.oobCode && to.query.continueUrl) {
+        next()
+      } else {
+        next('login')
+      }
+    }
   },
   {
     path: '/policy',
@@ -38,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/onboarding',
     name: 'Onboarding',
-    component: () => import(/* webpackChunkName: "terms" */ '@/views/Onboard.vue'),
+    component: () => import(/* webpackChunkName: "onboard" */ '@/views/Onboard.vue'),
     meta: {
       requiresAuth: true
     }

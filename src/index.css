@@ -9,7 +9,8 @@
     @apply invisible absolute;
   }
 
-  .has-tooltip:hover .has-tooltip:active .tooltip {
+  .has-tooltip:hover .tooltip,
+  .has-tooltip:active .tooltip {
     @apply visible z-50 bg-salmon-500 text-pacific-50 rounded shadow-md;
   }
 }

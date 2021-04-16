@@ -49,7 +49,7 @@ const en_locale = {
         forgotPassword: 'Forgot your password?',
         noAccount: "Don't have an account?",
         goToRegister: 'Register',
-        accountExists: 'Already have an account?',
+        accountExists: 'Remembered your password?',
         goToLogin: 'Login',
         tooltip: 'Enter your email to reset password.',
         successMessage:
@@ -97,6 +97,29 @@ const en_locale = {
         accountExists: 'Already have an account?',
         goToLogin: 'Login',
         tooltip: 'Complete form to register.'
+      },
+
+      emailActionsScreen: {
+        meta: {
+          titleReset: 'Reset password - MatchMeMD',
+          titleVerify: 'Verify password - MatchMeMD'
+        },
+        titles: {
+          reset: 'Reset password',
+          verify: 'Email verified!'
+        },
+        resetSuccessTitle: 'Password reset successful',
+        placeholderPassword: 'Password',
+        placeholderPasswordConfirm: 'Confirm password',
+        confirmPasswordError: 'Passwords do not match',
+        cta: 'Change password',
+        rememberedPassword: 'Remembered your password? ',
+        goToLogin: 'Login',
+        tooltip: 'Complete form to reset your password',
+        resetCodeExpired: 'Reset code may have expired',
+        resendPasswordReset: 'resend password reset',
+        login: 'login',
+        successMessage: 'Password successfully reset. Redirecting you to login...'
       },
 
       onboardScreen: {
