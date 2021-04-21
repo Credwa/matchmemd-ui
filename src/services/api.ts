@@ -7,6 +7,15 @@ export interface ContactRequest {
   first_name?: string
   last_name?: string
   country?: string
+  date_of_birth?: number
+  clinicals?: string
+  gender?: string
+  has_clinical_interest?: string
+  school?: string
+  specialties?: string
+  start_date?: string
+  visa_required?: string
+  medical_status?: string
 }
 
 const getHost = () => {

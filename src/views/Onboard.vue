@@ -1089,6 +1089,7 @@ import { Action } from '../store'
 import { UserProfile } from '../types'
 import { getUnixTime } from 'date-fns'
 import { useI18n } from 'vue-i18n'
+import { contactRequest } from '../services/api'
 import ImageTools from '../services/ImageTools'
 
 export default {
@@ -1097,7 +1098,7 @@ export default {
   setup() {
     mixpanel.track(ONBOARDING_BEGIN)
     const { t } = useI18n()
-    document.title = t('locale.onboardScreen.meta.title')
+
     const router = useRouter()
     const store = useStore<Partial<UserProfile>>()
     const userProfile: UserProfile = store.getters.getUserProfile
@@ -1116,7 +1117,9 @@ export default {
     const initials = computed<string>(
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
+    let date_of_birth: number | undefined = undefined
 
+    document.title = t('locale.onboardScreen.meta.title')
     // load profile picture
     store.dispatch(Action.DOWNLOAD_PROFILE_PICTURE).then((data: string | null) => {
       if (typeof data === 'string') {
@@ -1165,6 +1168,7 @@ export default {
     }
 
     function onDateOfBirthChange(e: any) {
+      date_of_birth = getUnixTime(new Date(e.value))
       store
         .dispatch(Action.UPDATE_USER_PROFILE, {
           dateOfBirth: getUnixTime(new Date(e.value))
@@ -1183,21 +1187,6 @@ export default {
     function back() {
       mixpanel.track(ONBOARDING_BACK)
       isPageTwo.value = false
-    }
-
-    function onFinishOnboarding(skipped: boolean) {
-      store
-        .dispatch(Action.UPDATE_USER_PROFILE, {
-          registrationComplete: true
-        })
-        .then(() => {
-          if (skipped) {
-            mixpanel.track(ONBOARDING_SKIP)
-          } else {
-            mixpanel.track(ONBOARDING_FINISHED)
-          }
-          router.push('/dashboard')
-        })
     }
 
     function onGenderChange() {
@@ -1311,6 +1300,34 @@ export default {
       3000,
       { leading: false }
     )
+
+    function onFinishOnboarding(skipped: boolean) {
+      store
+        .dispatch(Action.UPDATE_USER_PROFILE, {
+          registrationComplete: true
+        })
+        .then(() => {
+          if (skipped) {
+            mixpanel.track(ONBOARDING_SKIP)
+          } else {
+            mixpanel.track(ONBOARDING_FINISHED)
+          }
+          contactRequest({
+            email: userProfile.email,
+            gender: gender.value,
+            specialties: specialties.value.join(','),
+            medical_status: medicalStatus.value,
+            start_date: startDate.value,
+            country: country.value,
+            clinicals: clinical.value.join(','),
+            has_clinical_interest: hasClinicalInterest.value.toString(),
+            date_of_birth,
+            visa_required: visaRequired.value?.toString()
+          })
+
+          router.push('/dashboard')
+        })
+    }
 
     return {
       initials,

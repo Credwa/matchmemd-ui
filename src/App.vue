@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
 import ReloadPrompt from '@/components/ReloadPrompt.vue'
 
 export default {
