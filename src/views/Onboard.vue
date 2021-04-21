@@ -1118,7 +1118,7 @@ export default {
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
     let date_of_birth: number | undefined = undefined
-
+    console.log(userProfile)
     document.title = t('locale.onboardScreen.meta.title')
     // load profile picture
     store.dispatch(Action.DOWNLOAD_PROFILE_PICTURE).then((data: string | null) => {
@@ -1314,15 +1314,19 @@ export default {
           }
           contactRequest({
             email: userProfile.email,
-            gender: gender.value,
-            specialties: specialties.value.join(','),
-            medical_status: medicalStatus.value,
-            start_date: startDate.value,
             country: country.value,
-            clinicals: clinical.value.join(','),
-            has_clinical_interest: hasClinicalInterest.value.toString(),
-            date_of_birth,
-            visa_required: visaRequired.value?.toString()
+            first_name: userProfile.firstName,
+            last_name: userProfile.lastName,
+            custom_fields: {
+              clinicals: clinical.value.join(','),
+              has_clinical_interest: hasClinicalInterest.value.toString(),
+              date_of_birth,
+              visa_required: visaRequired.value?.toString(),
+              gender: gender.value,
+              specialties: specialties.value.join(','),
+              medical_status: medicalStatus.value,
+              start_date: startDate.value
+            }
           })
 
           router.push('/dashboard')

@@ -2,11 +2,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { auth } from '../services/firebase'
 
-export interface ContactRequest {
-  email?: string
-  first_name?: string
-  last_name?: string
-  country?: string
+interface CustomRequestCustomFields {
   date_of_birth?: number
   clinicals?: string
   gender?: string
@@ -14,8 +10,16 @@ export interface ContactRequest {
   school?: string
   specialties?: string
   start_date?: string
+
   visa_required?: string
   medical_status?: string
+}
+export interface ContactRequest {
+  email?: string
+  first_name?: string
+  last_name?: string
+  country?: string
+  custom_fields?: CustomRequestCustomFields
 }
 
 const getHost = () => {
