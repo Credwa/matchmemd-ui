@@ -1312,20 +1312,30 @@ export default {
           } else {
             mixpanel.track(ONBOARDING_FINISHED)
           }
+          // # Gender              string `json:"e13_T"`
+          // # DateOfBirth         int    `json:"e14_N"`
+          // # MedicalStatus       string `json:"e15_T"`
+          // # Specialties         string `json:"e9_T"`
+          // # HasClinicalInterest string `json:"e16_T"`
+          // # Clinicals           string `json:"e10_T"`
+          // # VisaRequired        string `json:"e12_T"`
+          // # School              string `json:"e5_T"`
+          // # StartDate           string `json:"e11_T"`
           contactRequest({
             email: userProfile.email,
             country: country.value,
             first_name: userProfile.firstName,
             last_name: userProfile.lastName,
             custom_fields: {
-              clinicals: clinical.value.join(','),
-              has_clinical_interest: hasClinicalInterest.value.toString(),
-              date_of_birth,
-              visa_required: visaRequired.value?.toString(),
-              gender: gender.value,
-              specialties: specialties.value.join(','),
-              medical_status: medicalStatus.value,
-              start_date: startDate.value
+              e10_T: clinical.value.join(','),
+              e16_T: hasClinicalInterest.value.toString(),
+              e14_N: date_of_birth,
+              e12_T: visaRequired.value?.toString(),
+              e13_T: gender.value,
+              e9_T: specialties.value.join(','),
+              e15_T: medicalStatus.value,
+              e11_T: startDate.value,
+              e5_T: school.value
             }
           })
 

@@ -2,17 +2,25 @@
 import axios, { AxiosResponse } from 'axios'
 import { auth } from '../services/firebase'
 
+// # Gender              string `json:"e13_T"`
+// # DateOfBirth         int    `json:"e14_N"`
+// # MedicalStatus       string `json:"e15_T"`
+// # Specialties         string `json:"e9_T"`
+// # HasClinicalInterest string `json:"e16_T"`
+// # Clinicals           string `json:"e10_T"`
+// # VisaRequired        string `json:"e12_T"`
+// # School              string `json:"e5_T"`
+// # StartDate           string `json:"e11_T"`
 interface CustomRequestCustomFields {
-  date_of_birth?: number
-  clinicals?: string
-  gender?: string
-  has_clinical_interest?: string
-  school?: string
-  specialties?: string
-  start_date?: string
-
-  visa_required?: string
-  medical_status?: string
+  e14_N?: number
+  e10_T?: string
+  e13_T?: string
+  e16_T?: string
+  e5_T?: string
+  e9_T?: string
+  e11_T?: string
+  e12_T?: string
+  e15_T?: string
 }
 export interface ContactRequest {
   email?: string
