@@ -1327,7 +1327,7 @@ export default {
             first_name: userProfile.firstName,
             last_name: userProfile.lastName,
             custom_fields: {
-              e10_T: clinical.value.join(','),
+              // e10_T: clinical.value.join(','),
               e16_T: hasClinicalInterest.value.toString(),
               e14_N: date_of_birth,
               e12_T: visaRequired.value?.toString(),
