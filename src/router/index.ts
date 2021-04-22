@@ -62,6 +62,11 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: () => import(/* webpackChunkName: "email-actions" */ '@/views/404.vue')
   }
 ]
 

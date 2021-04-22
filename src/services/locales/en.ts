@@ -394,6 +394,15 @@ const en_locale = {
           seven:
             'As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.'
         }
+      },
+
+      notFoundScreen: {
+        pageNotFound: "404 - Looks like you're lost.",
+        pageNotFoundDetails:
+          'Maybe this page used to exist or something was spelt wrong in the URL?',
+        pageNotFoundDetailsTwo: 'Does this look right - ',
+        goBack: 'Return home',
+        contactUs: 'Contact us'
       }
     }
   }
