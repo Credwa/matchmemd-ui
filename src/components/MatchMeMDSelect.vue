@@ -44,7 +44,7 @@
       >
         <ul
           v-show="selectState"
-          class="z-50 absolute mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-base"
+          class="z-50 absolute mt-1 w-full bg-white shadow-lg sm:max-h-96 max-h-72 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-base"
           tabindex="-1"
           role="listbox"
           :aria-labelledby="inputKey"

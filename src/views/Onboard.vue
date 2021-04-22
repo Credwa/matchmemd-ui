@@ -1118,7 +1118,6 @@ export default {
       () => userProfile.firstName[0].toUpperCase() + userProfile.lastName[0].toUpperCase()
     )
     let date_of_birth: number | undefined = undefined
-    console.log(userProfile)
     document.title = t('locale.onboardScreen.meta.title')
     // load profile picture
     store.dispatch(Action.DOWNLOAD_PROFILE_PICTURE).then((data: string | null) => {
@@ -1323,13 +1322,13 @@ export default {
           // # StartDate           string `json:"e11_T"`
           contactRequest({
             email: userProfile.email,
-            country: country.value,
+            country: country.value || userProfile.country,
             first_name: userProfile.firstName,
             last_name: userProfile.lastName,
             custom_fields: {
               e10_T: clinical.value.join(','),
               e16_T: hasClinicalInterest.value.toString(),
-              e14_N: date_of_birth,
+              e14_N: date_of_birth || userProfile.dateOfBirth,
               e12_T: visaRequired.value?.toString(),
               e13_T: gender.value,
               e9_T: specialties.value.join(','),

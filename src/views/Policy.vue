@@ -1,131 +1,177 @@
 <template>
   <LayoutDefault>
-    <div>
-      <h2>Privacy Policy of <span class="website_url">https://app.matchmemd.com</span></h2>
+    <div class="px-6 py-12 space-y-8 sm:space-y-12">
+      <header class="sm:mx-auto sm:w-full flex-col content-center text-center">
+        <router-link to="/login">
+          <img
+            height="40"
+            width="210"
+            class="mx-auto h-9 sm:h-10 w-auto"
+            src="/logo.svg"
+            alt="MatchMeMD"
+        /></router-link>
+        <h1
+          class="mt-8 text-center text-xl leading-7 font-bold sm:text-3xl sm:leading-9 text-gray-900"
+        >
+          {{ $t('locale.policyScreen.header') }}
+          <a class="text-pacific-600 hover:text-pacific-700" href="https://matchmemd.com"
+            >https://matchmemd.com</a
+          >
+        </h1>
+      </header>
+      <div class="space-y-9 max-w-7xl pb-24">
+        <p class="text-base font-normal">
+          {{ $t('locale.policyScreen.at') }}
+          <a href="https://matchmemd.com" class="text-pacific-600 hover:text-pacific-600"
+            >MatchMeMD</a
+          >{{ $t('locale.policyScreen.paragraphOne') }}
+        </p>
 
-      <p>
-        At <span class="website_name">MatchMeMD</span>, we collect and manage user data according to
-        the following Privacy Policy.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">
+            {{ $t('locale.policyScreen.dataCollected') }}
+          </h3>
 
-      <h3>Data Collected</h3>
+          <p class="text-base font-normal">
+            {{ $t('locale.policyScreen.paragraphTwo') }}
+          </p>
 
-      <p>
-        We collect information you provide directly to us. For example, we collect information when
-        you create an account, subscribe, participate in any interactive features of our services,
-        fill out a form, request customer support or otherwise communicate with us. The types of
-        information we may collect include your name, email address, postal address, credit card
-        information and other contact or identifying information you choose to provide.
-      </p>
+          <p class="text-base font-normal">
+            {{ $t('locale.policyScreen.paragraphThree') }}
+          </p>
 
-      <p>
-        We collect anonymous data from every visitor of the Website to monitor traffic and fix bugs.
-        For example, we collect information like web requests, the data sent in response to such
-        requests, the Internet Protocol address, the browser type, the browser language, and a
-        timestamp for the request.
-      </p>
+          <p class="text-base font-normal">
+            {{ $t('locale.policyScreen.paragraphFour') }}
+            <a
+              class="text-pacific-600 hover:text-pacific-700"
+              href="https://www.privacy-policy-template.com"
+              >Privacy Policy Template</a
+            >
+            {{ $t('locale.policyScreen.andThe') }}
+            <a
+              class="text-pacific-600 hover:text-pacific-700"
+              href="https://www.generateprivacypolicy.com"
+              >Generate Privacy Policy Generator</a
+            >.
+          </p>
+        </div>
 
-      <p>
-        We also use various technologies to collect information, and this may include sending
-        cookies to your computer. Cookies are small data files stored on your hard drive or in your
-        device memory that helps us to improve our services and your experience, see which areas and
-        features of our services are popular and count visits. We may also collect information using
-        web beacons (also known as "tracking pixels"). Web beacons are electronic images that may be
-        used in our services or emails and to track count visits or understand usage and campaign
-        effectiveness. Our Privacy Policy was created with the help of the
-        <a href="https://www.privacy-policy-template.com">Privacy Policy Template</a> and the
-        <a href="https://www.generateprivacypolicy.com">Generate Privacy Policy Generator</a>.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">{{ $t('locale.policyScreen.useOfData') }}</h3>
 
-      <h3>Use of the Data</h3>
+          <p>
+            {{ $t('locale.policyScreen.paragraphFive.one') }}
+            <a href="https://matchmemd.com" class="text-pacific-600 hover:text-pacific-600"
+              >MatchMeMD</a
+            >
+            {{ $t('locale.policyScreen.paragraphFive.two') }}
+          </p>
 
-      <p>
-        We only use your personal information to provide you the
-        <span class="website_name">MatchMeMD</span> services or to communicate with you about the
-        Website or the services.
-      </p>
+          <p>
+            {{ $t('locale.policyScreen.paragraphSix') }}
+          </p>
 
-      <p>
-        We employ industry standard techniques to protect against unauthorized access of data about
-        you that we store, including personal information.
-      </p>
+          <p>
+            {{ $t('locale.policyScreen.paragraphSeven') }}
+          </p>
 
-      <p>
-        We do not share personal information you have provided to us without your consent, unless:
-      </p>
+          <ul class="list-disc pl-8">
+            <li>{{ $t('locale.policyScreen.paragraphEight') }}</li>
+            <li>
+              {{ $t('locale.policyScreen.paragraphNine') }}
+            </li>
+            <li>
+              {{ $t('locale.policyScreen.paragraphTen') }}
+            </li>
+          </ul>
+        </div>
 
-      <ul>
-        <li>Doing so is appropriate to carry out your own request</li>
-        <li>We believe it's needed to enforce our legal agreements or that is legally required</li>
-        <li>
-          We believe it's needed to detect, prevent or address fraud, security or technical issues
-        </li>
-      </ul>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">
+            {{ $t('locale.policyScreen.sharingOfData') }}
+          </h3>
 
-      <h3>Sharing of Data</h3>
+          <p>
+            {{ $t('locale.policyScreen.paragraphEleven') }}
+          </p>
 
-      <p>
-        We don't share your personal information with third parties. Aggregated, anonymized data is
-        periodically transmitted to external services to help us improve the Website and service.
-      </p>
+          <p>
+            {{ $t('locale.policyScreen.paragraphTwelve') }}
+          </p>
 
-      <p>
-        We may allow third parties to provide analytics services. These third parties may use
-        cookies, web beacons and other technologies to collect information about your use of the
-        services and other websites, including your IP address, web browser, pages viewed, time
-        spent on pages, links clicked and conversion information.
-      </p>
+          <p>
+            {{ $t('locale.policyScreen.paragraphThirteen') }}
+          </p>
+        </div>
 
-      <p>
-        We also use social buttons provided by services like Twitter, Google+, LinkedIn and
-        Facebook. Your use of these third party services is entirely optional. We are not
-        responsible for the privacy policies and/or practices of these third party services, and you
-        are responsible for reading and understanding those third party services' privacy policies.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">{{ $t('locale.policyScreen.cookies') }}</h3>
 
-      <h3>Cookies</h3>
+          <p>{{ $t('locale.policyScreen.paragraphFourteen') }}</p>
 
-      <p>We may use cookies on our site to remember your preferences.</p>
+          <p>
+            {{ $t('locale.policyScreen.paragraphFifteen.one') }}
+            <a href="https://www.privacypolicyonline.com/what-are-cookies/">{{
+              $t('locale.policyScreen.paragraphFifteen.two')
+            }}</a
+            >.
+          </p>
+        </div>
 
-      <p>
-        For more general information on cookies, please read
-        <a href="https://www.privacypolicyonline.com/what-are-cookies/">"What Are Cookies"</a>.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">{{ $t('locale.policyScreen.optOut') }}</h3>
 
-      <h3>Opt-Out, Communication Preferences</h3>
+          <p>
+            {{ $t('locale.policyScreen.paragraphSixteen') }}
+          </p>
+        </div>
 
-      <p>
-        You may modify your communication preferences and/or opt-out from specific communications at
-        any time. Please specify and adjust your preferences.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">{{ $t('locale.policyScreen.security') }}</h3>
 
-      <h3>Security</h3>
+          <p>
+            {{ $t('locale.policyScreen.paragraphSeventeen') }}
+          </p>
+        </div>
 
-      <p>
-        We take reasonable steps to protect personally identifiable information from loss, misuse,
-        and unauthorized access, disclosure, alteration, or destruction. But, you should keep in
-        mind that no Internet transmission is ever completely secure or error-free. In particular,
-        email sent to or from the Sites may not be secure.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">
+            {{ $t('locale.policyScreen.terms') }}
+          </h3>
 
-      <h3>About Children</h3>
+          <p>
+            {{ $t('locale.policyScreen.pleaseRead') }}
 
-      <p>
-        The Website is not intended for children under the age of 13. We do not knowingly collect
-        personally identifiable information via the Website from visitors in this age group.
-      </p>
+            <router-link class="text-pacific-600 hover:text-pacific-600" to="/terms"
+              >Terms and Conditions</router-link
+            >
+          </p>
+        </div>
 
-      <h3>Changes to the Privacy Policy</h3>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">
+            {{ $t('locale.policyScreen.aboutChildren') }}
+          </h3>
 
-      <p>
-        We may amend this Privacy Policy from time to time. Use of information we collect now is
-        subject to the Privacy Policy in effect at the time such information is used.
-      </p>
+          <p>
+            {{ $t('locale.policyScreen.paragraphEighteen') }}
+          </p>
+        </div>
 
-      <p>
-        If we make major changes in the way we collect or use information, we will notify you by
-        posting an announcement on the Website or sending you an email.
-      </p>
+        <div class="space-y-3">
+          <h3 class="text-lg font-medium sm:text-2xl">
+            {{ $t('locale.policyScreen.policyChanges') }}
+          </h3>
+
+          <p>
+            {{ $t('locale.policyScreen.paragraphNineteen') }}
+          </p>
+
+          <p>
+            {{ $t('locale.policyScreen.paragraphTwenty') }}
+          </p>
+        </div>
+      </div>
     </div>
   </LayoutDefault>
 </template>

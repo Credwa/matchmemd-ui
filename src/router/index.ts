@@ -3,7 +3,7 @@ import { auth } from '../services/firebase'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Dashboard from '@/views/Dashboard.vue'
-import { Action, store } from '../store'
+import { store } from '../store'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -71,9 +71,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _, next) => {
-  auth.currentUser?.getIdToken().then((idToken) => {
-    console.log(idToken)
-  })
   const requiresAuth = to.matched.some((x) => x.meta.requiresAuth)
   const userProfile = store.getters.getUserProfile
   if (auth.currentUser && (to.name === 'Login' || to.name === 'Register')) {

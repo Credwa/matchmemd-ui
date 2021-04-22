@@ -192,7 +192,6 @@ export default {
       .child('Files/matchmemd_marketing.pdf')
       .getDownloadURL()
       .then((url) => {
-        console.log(url)
         pdfDownloadUrl.value = url
       })
 
