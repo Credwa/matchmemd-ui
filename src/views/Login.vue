@@ -120,7 +120,7 @@
 
                 <div class="mt-6 grid grid-cols-2 gap-2">
                   <div>
-                    <a href="#" class="matchmemd-social-button">
+                    <button @click="loginWithGoogle" class="matchmemd-social-button focus:ring-0">
                       <span class="sr-only">{{ $t('locale.loginScreen.withGoogle') }}</span>
                       <img
                         height="20"
@@ -129,11 +129,11 @@
                         src="/google-logo.svg"
                         alt="Google login"
                       />
-                    </a>
+                    </button>
                   </div>
 
                   <div>
-                    <a href="#" class="matchmemd-social-button">
+                    <button @click="loginWithFacebook" class="matchmemd-social-button focus:ring-0">
                       <span class="sr-only">{{ $t('locale.loginScreen.withFacebook') }}</span>
                       <img
                         height="20"
@@ -142,7 +142,7 @@
                         src="/facebook-logo.svg"
                         alt="Facebook login"
                       />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -173,6 +173,7 @@ import { useStore } from 'vuex'
 import { LoginKeys, LoginValues } from '../types/'
 import { Action } from '../store/actions'
 import { LOGIN_FAILED } from '../services/mixpanel-events'
+import { verifyEmailRequest } from '../services/api'
 
 export default {
   name: 'Login',
@@ -252,6 +253,32 @@ export default {
         })
     })
 
+    const loginWithFacebook = () => {
+      store
+        .dispatch(Action.LOGIN_WITH_PROVIDER, 'facebook')
+        .then((data) => {
+          if (data.verified) {
+            verifyEmailRequest(data.email, data.firstName)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+
+    const loginWithGoogle = () => {
+      store
+        .dispatch(Action.LOGIN_WITH_PROVIDER, 'google')
+        .then((data) => {
+          if (data.verified) {
+            verifyEmailRequest(data.email, data.firstName)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+
     return {
       onSubmit,
       isSubmitting,
@@ -265,7 +292,9 @@ export default {
       loginEnabled,
       loading,
       loginError,
-      rememberMe
+      rememberMe,
+      loginWithFacebook,
+      loginWithGoogle
     }
   }
 }

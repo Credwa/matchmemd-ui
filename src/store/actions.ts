@@ -13,8 +13,12 @@ export enum Action {
   LOGOUT = 'LOGOUT',
   UPDATE_USER_PROFILE = 'UPDATE_USER_PROFILE',
   UPLOAD_PROFILE_PICTURE = 'UPLOAD_PROFILE_PICTURE',
-  DOWNLOAD_PROFILE_PICTURE = 'DOWNLOAD_PROFILE_PICTURE'
+  DOWNLOAD_PROFILE_PICTURE = 'DOWNLOAD_PROFILE_PICTURE',
+  REGISTER_WITH_PROVIDER = 'REGISTER_WITH_PROVIDER',
+  LOGIN_WITH_PROVIDER = 'LOGIN_WITH_PROVIDER'
 }
+
+type Provider = 'google' | 'facebook'
 
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -25,12 +29,14 @@ type AugmentedActionContext = {
 
 export interface Actions {
   [Action.LOGIN]({ dispatch }: AugmentedActionContext, form: LoginForm): void
+  [Action.LOGIN_WITH_PROVIDER]({ dispatch }: AugmentedActionContext, provider: Provider): void
   [Action.FETCH_USER_PROFILE]({ commit }: AugmentedActionContext, user: firebase.types.User): void
   [Action.UPDATE_USER_PROFILE](
     { commit, state }: AugmentedActionContext,
     payload: Partial<UserProfile>
   ): void
   [Action.REGISTER]({ dispatch }: AugmentedActionContext, form: RegisterForm): void
+  [Action.REGISTER_WITH_PROVIDER]({ dispatch }: AugmentedActionContext, provider: Provider): void
   [Action.LOGOUT]({ commit }: AugmentedActionContext): void
   [Action.UPLOAD_PROFILE_PICTURE]({ dispatch }: AugmentedActionContext, blob: Blob): void
   [Action.DOWNLOAD_PROFILE_PICTURE]({ state }: AugmentedActionContext): void
@@ -45,6 +51,48 @@ export const actions: ActionTree<State, State> & Actions = {
       mixpanel_user_login(user)
       // fetch user profile and set in state
       dispatch(Action.FETCH_USER_PROFILE, user)
+    }
+  },
+
+  async [Action.LOGIN_WITH_PROVIDER]({ dispatch }, provider: Provider) {
+    // sign user up
+    const DEFAULT_ROLE = 'USER'
+    let authProvider:
+      | firebase.types.auth.GoogleAuthProvider
+      | firebase.types.auth.FacebookAuthProvider
+
+    switch (provider) {
+      case 'google':
+        authProvider = firebase.googleAuthProvider
+        break
+      case 'facebook':
+        authProvider = firebase.facebookAuthProvider
+        break
+    }
+
+    const { user } = await firebase.auth.signInWithPopup(authProvider)
+    // // create user profile object in userCollections
+    if (user) {
+      const firstName = user.displayName?.split(' ')[0] as string
+      const lastName = user.displayName?.split(' ')[1] as string
+      await firebase.usersCollection.doc(user.uid).set({
+        email: user.email as string,
+        firstName: user.displayName?.split(' ')[0] as string,
+        lastName: user.displayName?.split(' ')[1] as string,
+        role: DEFAULT_ROLE,
+        created_at: Number((<{ a: number }>user.metadata).a),
+        last_signed_in: Number((<{ b: number }>user.metadata).b),
+        registrationComplete: false
+      })
+      mixpanel_user_register(user, {
+        email: user.email as string,
+        firstName,
+        lastName,
+        password: '123'
+      })
+      // fetch user profile and set in state
+      dispatch(Action.FETCH_USER_PROFILE, user)
+      return { firstName, lastName, email: user.email as string, verified: user.emailVerified }
     }
   },
 
@@ -74,6 +122,48 @@ export const actions: ActionTree<State, State> & Actions = {
       mixpanel_user_register(user, form)
       // fetch user profile and set in state
       dispatch(Action.FETCH_USER_PROFILE, user)
+    }
+  },
+
+  async [Action.REGISTER_WITH_PROVIDER]({ dispatch }, provider: Provider) {
+    // sign user up
+    const DEFAULT_ROLE = 'USER'
+    let authProvider:
+      | firebase.types.auth.GoogleAuthProvider
+      | firebase.types.auth.FacebookAuthProvider
+
+    switch (provider) {
+      case 'google':
+        authProvider = firebase.googleAuthProvider
+        break
+      case 'facebook':
+        authProvider = firebase.facebookAuthProvider
+        break
+    }
+
+    const { user } = await firebase.auth.signInWithPopup(authProvider)
+    // // create user profile object in userCollections
+    if (user) {
+      const firstName = user.displayName?.split(' ')[0] as string
+      const lastName = user.displayName?.split(' ')[1] as string
+      await firebase.usersCollection.doc(user.uid).set({
+        email: user.email as string,
+        firstName: user.displayName?.split(' ')[0] as string,
+        lastName: user.displayName?.split(' ')[1] as string,
+        role: DEFAULT_ROLE,
+        created_at: Number((<{ a: number }>user.metadata).a),
+        last_signed_in: Number((<{ b: number }>user.metadata).b),
+        registrationComplete: false
+      })
+      mixpanel_user_register(user, {
+        email: user.email as string,
+        firstName,
+        lastName,
+        password: '123'
+      })
+      // fetch user profile and set in state
+      dispatch(Action.FETCH_USER_PROFILE, user)
+      return { firstName, lastName, email: user.email as string, verified: user.emailVerified }
     }
   },
 

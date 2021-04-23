@@ -33,7 +33,6 @@
                   id="user-menu"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  @blur="toggleMenu(false)"
                 >
                   <span class="sr-only">Open user menu</span>
                   <span class="inline-block relative">

@@ -213,7 +213,7 @@
 
                 <div class="mt-6 grid grid-cols-2 gap-2">
                   <div>
-                    <a href="#" class="matchmemd-social-button">
+                    <button @click="signupWithGoogle" class="matchmemd-social-button">
                       <span class="sr-only">{{ $t('locale.registerScreen.withGoogle') }}</span>
                       <img
                         height="20"
@@ -222,11 +222,14 @@
                         src="/google-logo.svg"
                         alt="Google sign in"
                       />
-                    </a>
+                    </button>
                   </div>
 
                   <div>
-                    <a href="#" class="matchmemd-social-button">
+                    <button
+                      @click="signupWithFacebook"
+                      class="matchmemd-social-button focus:ring-0"
+                    >
                       <span class="sr-only">{{ $t('locale.registerScreen.withFacebook') }}</span>
                       <img
                         height="20"
@@ -235,7 +238,7 @@
                         src="/facebook-logo.svg"
                         alt="Facebook sign in"
                       />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -383,6 +386,38 @@ export default {
         })
     })
 
+    const signupWithFacebook = () => {
+      store
+        .dispatch(Action.REGISTER_WITH_PROVIDER, 'facebook')
+        .then((data) => {
+          verifyEmailRequest(data.email, data.firstName)
+          contactRequest({
+            email: data.email,
+            first_name: data.firstName,
+            last_name: data.lastName
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+
+    const signupWithGoogle = () => {
+      store
+        .dispatch(Action.REGISTER_WITH_PROVIDER, 'google')
+        .then((data) => {
+          verifyEmailRequest(data.email, data.firstName)
+          contactRequest({
+            email: data.email,
+            first_name: data.firstName,
+            last_name: data.lastName
+          })
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+
     return {
       onSubmit,
       isSubmitting,
@@ -402,7 +437,9 @@ export default {
       registerEnabled,
       loading,
       registerError,
-      registerErrorObject
+      registerErrorObject,
+      signupWithGoogle,
+      signupWithFacebook
     }
   }
 }

@@ -20,7 +20,8 @@ firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore()
 const auth = firebase.auth()
 const storage = firebase.storage()
-
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
+const facebookAuthProvider = new firebase.auth.FacebookAuthProvider()
 // collection references
 const usersCollection = db.collection(
   'users'
@@ -30,4 +31,13 @@ const usersCollection = db.collection(
 const storageRef = storage.ref()
 
 // export utils/refs
-export { db, auth, storage, usersCollection, storageRef, firebase as types }
+export {
+  db,
+  auth,
+  googleAuthProvider,
+  facebookAuthProvider,
+  storage,
+  usersCollection,
+  storageRef,
+  firebase as types
+}

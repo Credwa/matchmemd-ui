@@ -39,7 +39,6 @@ export default {
   setup() {
     const location = ref(window.location.href)
 
-    console.log(window.location.href)
     return {
       location
     }
