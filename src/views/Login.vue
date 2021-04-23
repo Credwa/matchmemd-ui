@@ -256,11 +256,7 @@ export default {
     const loginWithFacebook = () => {
       store
         .dispatch(Action.LOGIN_WITH_PROVIDER, 'facebook')
-        .then((data) => {
-          if (data.verified) {
-            verifyEmailRequest(data.email, data.firstName)
-          }
-        })
+        .then((data) => {})
         .catch((e) => {
           console.log(e)
         })
@@ -269,11 +265,7 @@ export default {
     const loginWithGoogle = () => {
       store
         .dispatch(Action.LOGIN_WITH_PROVIDER, 'google')
-        .then((data) => {
-          if (data.verified) {
-            verifyEmailRequest(data.email, data.firstName)
-          }
-        })
+        .then((data) => {})
         .catch((e) => {
           console.log(e)
         })
