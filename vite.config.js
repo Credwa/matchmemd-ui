@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'MatchMeMD',
         short_name: 'MatchMeMD',
         start_url: '/',
-        display: 'standalone',
+        display: 'fullscreen',
         background_color: '#f1f9fa',
         theme_color: '#14acbd',
         description: 'MatchMeMD web application',
