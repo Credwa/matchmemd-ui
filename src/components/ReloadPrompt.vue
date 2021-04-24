@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="offlineReady || needRefresh"
-    class="fixed right-0 bottom-0 py-4 px-4 m-4 shadow-md rounded-lg hidden sm:block"
+    class="fixed bg-gray-50 right-0 bottom-0 py-4 px-4 m-4 shadow-md rounded-lg hidden sm:block"
     role="alert"
   >
     <div class="mb-4 text-pacific-900">
@@ -37,6 +37,11 @@ import { useRegisterSW } from 'virtual:pwa-register/vue'
 export default {
   setup() {
     const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW()
+
+    setTimeout(() => {
+      close()
+    }, 6000)
+
     const close = async () => {
       offlineReady.value = false
       needRefresh.value = false
@@ -45,18 +50,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.pwa-toast {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  margin: 16px;
-  padding: 12px;
-  border: 1px solid #8885;
-  border-radius: 4px;
-  z-index: 1;
-  text-align: left;
-  box-shadow: 3px 4px 5px 0px #8885;
-}
-</style>

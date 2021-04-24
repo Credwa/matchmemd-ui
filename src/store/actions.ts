@@ -5,6 +5,7 @@ import { DEFAULT_USER, State } from './state'
 import { Mutations, Mutation } from './mutations'
 import { LoginForm, RegisterForm, UserProfile } from '../types/'
 import { mixpanel_user_register, mixpanel_user_login } from '../services/mixpanel-events'
+import { contactRequest, verifyEmailRequest } from '../services/api'
 
 export enum Action {
   LOGIN = 'LOGIN',
@@ -56,7 +57,6 @@ export const actions: ActionTree<State, State> & Actions = {
 
   async [Action.LOGIN_WITH_PROVIDER]({ dispatch }, provider: Provider) {
     // sign user up
-    const DEFAULT_ROLE = 'USER'
     let authProvider:
       | firebase.types.auth.GoogleAuthProvider
       | firebase.types.auth.FacebookAuthProvider
@@ -73,26 +73,9 @@ export const actions: ActionTree<State, State> & Actions = {
     const { user } = await firebase.auth.signInWithPopup(authProvider)
     // // create user profile object in userCollections
     if (user) {
-      const firstName = user.displayName?.split(' ')[0] as string
-      const lastName = user.displayName?.split(' ')[1] as string
-      await firebase.usersCollection.doc(user.uid).set({
-        email: user.email as string,
-        firstName: user.displayName?.split(' ')[0] as string,
-        lastName: user.displayName?.split(' ')[1] as string,
-        role: DEFAULT_ROLE,
-        created_at: Number((<{ a: number }>user.metadata).a),
-        last_signed_in: Number((<{ b: number }>user.metadata).b),
-        registrationComplete: false
-      })
-      mixpanel_user_register(user, {
-        email: user.email as string,
-        firstName,
-        lastName,
-        password: '123'
-      })
+      mixpanel_user_login(user)
       // fetch user profile and set in state
       dispatch(Action.FETCH_USER_PROFILE, user)
-      return { firstName, lastName, email: user.email as string, verified: user.emailVerified }
     }
   },
 
@@ -127,7 +110,7 @@ export const actions: ActionTree<State, State> & Actions = {
 
   async [Action.REGISTER_WITH_PROVIDER]({ dispatch }, provider: Provider) {
     // sign user up
-    const DEFAULT_ROLE = 'USER'
+
     let authProvider:
       | firebase.types.auth.GoogleAuthProvider
       | firebase.types.auth.FacebookAuthProvider
@@ -144,35 +127,17 @@ export const actions: ActionTree<State, State> & Actions = {
     const { user } = await firebase.auth.signInWithPopup(authProvider)
     // // create user profile object in userCollections
     if (user) {
-      const firstName = user.displayName?.split(' ')[0] as string
-      const lastName = user.displayName?.split(' ')[1] as string
-      await firebase.usersCollection.doc(user.uid).set({
-        email: user.email as string,
-        firstName: user.displayName?.split(' ')[0] as string,
-        lastName: user.displayName?.split(' ')[1] as string,
-        role: DEFAULT_ROLE,
-        created_at: Number((<{ a: number }>user.metadata).a),
-        last_signed_in: Number((<{ b: number }>user.metadata).b),
-        registrationComplete: false
-      })
-      mixpanel_user_register(user, {
-        email: user.email as string,
-        firstName,
-        lastName,
-        password: '123'
-      })
       // fetch user profile and set in state
       dispatch(Action.FETCH_USER_PROFILE, user)
-      return { firstName, lastName, email: user.email as string, verified: user.emailVerified }
     }
   },
 
-  async [Action.FETCH_USER_PROFILE]({ commit }, user) {
+  async [Action.FETCH_USER_PROFILE]({ commit, dispatch }, user) {
     // fetch user profile
     if (user) {
       const userProfile = await firebase.usersCollection.doc(user.uid).get()
       // set user profile in state
-      if (userProfile) {
+      if (userProfile.exists) {
         commit(Mutation.SET_USER_PROFILE, userProfile.data())
         const previousRoute = router.options.history.state.back
         if (
@@ -189,6 +154,34 @@ export const actions: ActionTree<State, State> & Actions = {
         ) {
           router.push('/dashboard')
         }
+      } else {
+        const DEFAULT_ROLE = 'USER'
+        const firstName = user.displayName?.split(' ')[0] as string
+        const lastName = user.displayName?.split(' ')[1] as string
+        await firebase.usersCollection.doc(user.uid).set({
+          email: user.email as string,
+          firstName: user.displayName?.split(' ')[0] as string,
+          lastName: user.displayName?.split(' ')[1] as string,
+          role: DEFAULT_ROLE,
+          created_at: Number((<{ a: number }>user.metadata).a),
+          last_signed_in: Number((<{ b: number }>user.metadata).b),
+          registrationComplete: false
+        })
+        mixpanel_user_register(user, {
+          email: user.email as string,
+          firstName,
+          lastName,
+          password: '123'
+        })
+
+        verifyEmailRequest(user?.email as string, firstName)
+        contactRequest({
+          email: user.email as string,
+          first_name: firstName,
+          last_name: lastName
+        })
+
+        dispatch(Action.FETCH_USER_PROFILE, user)
       }
     }
   },

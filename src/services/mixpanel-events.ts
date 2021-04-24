@@ -42,9 +42,9 @@ export const mixpanel_user_register = (user: types.User, form: RegisterForm): vo
   mixpanel.track<null>(NEW_USER)
 }
 
-export const mixpanel_user_login = (user: types.User): void => {
+export const mixpanel_user_login = (user: types.User, details?: string): void => {
   mixpanel.identify(user.uid)
-  mixpanel.track<null>(LOGIN)
+  mixpanel.track(LOGIN, details)
 }
 
 export const mixpanel_user_return = (user: types.User): void => {

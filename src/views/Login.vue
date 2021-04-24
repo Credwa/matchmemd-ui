@@ -254,21 +254,17 @@ export default {
     })
 
     const loginWithFacebook = () => {
-      store
-        .dispatch(Action.LOGIN_WITH_PROVIDER, 'facebook')
-        .then((data) => {})
-        .catch((e) => {
-          console.log(e)
-        })
+      store.dispatch(Action.LOGIN_WITH_PROVIDER, 'facebook').catch((e) => {
+        loginError.value = true
+        mixpanel.track(LOGIN_FAILED, 'facebook')
+      })
     }
 
     const loginWithGoogle = () => {
-      store
-        .dispatch(Action.LOGIN_WITH_PROVIDER, 'google')
-        .then((data) => {})
-        .catch((e) => {
-          console.log(e)
-        })
+      store.dispatch(Action.LOGIN_WITH_PROVIDER, 'google').catch((e) => {
+        loginError.value = true
+        mixpanel.track(LOGIN_FAILED, 'facebook')
+      })
     }
 
     return {

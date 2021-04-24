@@ -387,35 +387,19 @@ export default {
     })
 
     const signupWithFacebook = () => {
-      store
-        .dispatch(Action.REGISTER_WITH_PROVIDER, 'facebook')
-        .then((data) => {
-          verifyEmailRequest(data.email, data.firstName)
-          contactRequest({
-            email: data.email,
-            first_name: data.firstName,
-            last_name: data.lastName
-          })
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+      store.dispatch(Action.REGISTER_WITH_PROVIDER, 'facebook').catch((e) => {
+        registerError.value = true
+        mixpanel.track(REGISTRATION_FAILED, 'facebook')
+        registerErrorObject.value = e
+      })
     }
 
     const signupWithGoogle = () => {
-      store
-        .dispatch(Action.REGISTER_WITH_PROVIDER, 'google')
-        .then((data) => {
-          verifyEmailRequest(data.email, data.firstName)
-          contactRequest({
-            email: data.email,
-            first_name: data.firstName,
-            last_name: data.lastName
-          })
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+      store.dispatch(Action.REGISTER_WITH_PROVIDER, 'google').catch((e) => {
+        registerError.value = true
+        mixpanel.track(REGISTRATION_FAILED, 'google')
+        registerErrorObject.value = e
+      })
     }
 
     return {
