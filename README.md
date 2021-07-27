@@ -1,7 +1,7 @@
 # MatchMeMD User Interface
 
-Figma mockup: https://www.figma.com/file/l8hHyBEiayCW4XYrJmo5r4/MatchMeMD?node-id=1%3A2
-Figma low-fi designs: https://www.figma.com/file/lxl6DsHz8ocWYtqpzL5hsm/App-wireframe?node-id=0%3A1
+# Figma mockup: https://www.figma.com/file/l8hHyBEiayCW4XYrJmo5r4/MatchMeMD?node-id=1%3A2
+# Figma low-fi designs: https://www.figma.com/file/lxl6DsHz8ocWYtqpzL5hsm/App-wireframe?node-id=0%3A1
 
 ## Project setup and usage
 
