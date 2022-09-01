@@ -23,7 +23,7 @@
     "vee-validate": "^4.2.3",
     "vite-plugin-pwa": "^0.6.4",
     "vue": "~3.0",
-    "vue-i18n": "^9.0.0",
+    "vue-i18n": "^9.2.2",
     "vue-mixpanel": "^1.0.7",
     "vue-router": "4",
     "vuex": "~4.0"
